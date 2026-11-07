@@ -1,0 +1,2 @@
+rent_items_identifier,invoice_id,item_type,description,amount,reg_date
+"#NOTE: rent_items_identifier = a unique value to identify this record and its related data in the system, e.g. account_number or registration number. Leave blank to auto-generate. Delete this row before uploading.",,,,,

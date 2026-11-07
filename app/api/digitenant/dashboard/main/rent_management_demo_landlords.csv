@@ -1,0 +1,4 @@
+properties_landlords_identifier,landlord_name,phone_number,email,payout_account,landlord_status,remark,reg_date
+LND-001,David Mwangi,0700000001,david.mwangi@example.com,MPESA - 0700000001,ACTIVE,Owner of Greenview Apartments and Sunrise Court,2025-01-15
+LND-002,Grace Wanjiku,0700000002,grace.wanjiku@example.com,BANK - DEMO-ACC-002,ACTIVE,Owner of Palm Ridge Villas and Mwangaza Business Centre,2025-03-10
+LND-003,Peter Otieno,0700000003,peter.otieno@example.com,MPESA - 0700000003,ACTIVE,Owner of Oakwood Residential Court,2025-06-20

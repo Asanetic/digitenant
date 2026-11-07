@@ -1,0 +1,24 @@
+report Collections "Rent Collections"
+  by month|day|year
+  date payment_date
+  entity rental_rent_collections
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  filter method = payment_method
+
+  # assumes payment_status=confirmed for a payment that counts as received
+  payments = count rent_payments where payment_status=confirmed "Payments"
+  collected = sum rent_payments.amount where payment_status=confirmed "Rent Collected" money
+  avg_payment = collected / payments "Average Payment" money
+  chg = change(collected) "Collected vs Previous"
+
+  forecast collected next 3
+  forecast payments next 3
+
+  headline {label}: {payments} payments, {collected} collected[, {updown} {abs(chg)}% on {prev_label}].
+  remark payments == 0 | watch | No payments | No rent payments were received in {label}.
+  remark chg !== null && chg <= -20 | watch | Collections dropped | {label}: {collected} collected, down {abs(chg)}% on {prev_label}.
+  remark true | neutral | Collections | {payments} payments totalling {collected}, averaging {avg_payment}.

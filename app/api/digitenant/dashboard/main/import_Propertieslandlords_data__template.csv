@@ -1,0 +1,2 @@
+properties_landlords_identifier,landlord_name,phone_number,email,payout_account,landlord_status,remark,reg_date
+"#NOTE: properties_landlords_identifier = a unique value to identify this record and its related data in the system, e.g. account_number or registration number. Leave blank to auto-generate. Delete this row before uploading.",,,,,,,

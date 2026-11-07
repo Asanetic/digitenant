@@ -1,0 +1,2 @@
+rent_invoices_identifier,lease_id,tenant_id,invoice_date,due_date,billing_period,total_amount,paid_amount
+"#NOTE: rent_invoices_identifier = a unique value to identify this record and its related data in the system, e.g. account_number or registration number. Leave blank to auto-generate. Delete this row before uploading.",,,,,,,

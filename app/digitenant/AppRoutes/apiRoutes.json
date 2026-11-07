@@ -1,0 +1,289 @@
+{
+  "smartapi": {
+    "base": "/api/digitenant/smartapi"
+  },
+  "dashboard": {
+    "main": "/api/digitenant/dashboard/main"
+  },
+  "smartmessages": {
+    "base": "/api/digitenant/messages/list",
+    "delete": "/api/digitenant/messages/list/delete",
+    "import": "/api/digitenant/messages/import"
+  },
+  "messagetemplates": {
+    "base": "/api/digitenant/messagetemplates/list",
+    "delete": "/api/digitenant/messagetemplates/list/delete",
+    "import": "/api/digitenant/messagetemplates/import"
+  },
+  "clients": {
+    "base": "/api/digitenant/clients/list",
+    "delete": "/api/digitenant/clients/list/delete",
+    "import": "/api/digitenant/clients/import"
+  },
+  "loans": {
+    "base": "/api/digitenant/loans/list",
+    "delete": "/api/digitenant/loans/list/delete",
+    "import": "/api/digitenant/loans/import"
+  },
+  "deviceslist": {
+    "base": "/api/digitenant/deviceslist/list",
+    "delete": "/api/digitenant/deviceslist/list/delete",
+    "import": "/api/digitenant/deviceslist/import"
+  },
+  "devicesallocations": {
+    "base": "/api/digitenant/devicesallocations/list",
+    "delete": "/api/digitenant/devicesallocations/list/delete",
+    "import": "/api/digitenant/devicesallocations/import"
+  },
+  "loansplans": {
+    "base": "/api/digitenant/loansplans/list",
+    "delete": "/api/digitenant/loansplans/list/delete",
+    "import": "/api/digitenant/loansplans/import"
+  },
+  "loansrepayments": {
+    "base": "/api/digitenant/loansrepayments/list",
+    "delete": "/api/digitenant/loansrepayments/list/delete",
+    "import": "/api/digitenant/loansrepayments/import"
+  },
+  "paytriggerlogs": {
+    "base": "/api/digitenant/paytriggerlogs/list",
+    "delete": "/api/digitenant/paytriggerlogs/list/delete",
+    "import": "/api/digitenant/paytriggerlogs/import"
+  },
+  "paytriggersettings": {
+    "base": "/api/digitenant/paytriggersettings/list",
+    "delete": "/api/digitenant/paytriggersettings/list/delete",
+    "import": "/api/digitenant/paytriggersettings/import"
+  },
+  "remindershistory": {
+    "base": "/api/digitenant/remindershistory/list",
+    "delete": "/api/digitenant/remindershistory/list/delete",
+    "import": "/api/digitenant/remindershistory/import"
+  },
+  "reminderstemplates": {
+    "base": "/api/digitenant/reminderstemplates/list",
+    "delete": "/api/digitenant/reminderstemplates/list/delete",
+    "import": "/api/digitenant/reminderstemplates/import"
+  },
+  "systemsettings": {
+    "base": "/api/digitenant/systemsettings/list",
+    "delete": "/api/digitenant/systemsettings/list/delete",
+    "import": "/api/digitenant/systemsettings/import"
+  },
+  "loansperformance": {
+    "base": "/api/digitenant/reports/loans/performance/list"
+  },
+  "collectionsoverdue": {
+    "base": "/api/digitenant/reports/collections/overdue/list"
+  },
+  "collectionscontracts": {
+    "base": "/api/digitenant/reports/collections/contracts/list"
+  },
+  "devicesstock": {
+    "base": "/api/digitenant/reports/devices/stock/list"
+  },
+  "financeprofit": {
+    "base": "/api/digitenant/reports/finance/profit/list"
+  },
+  "collectionsrisk": {
+    "base": "/api/digitenant/reports/collections/risk/list"
+  },
+  "collectionsupcoming": {
+    "base": "/api/digitenant/reports/collections/upcoming/list"
+  },
+  "clientsgrowth": {
+    "base": "/api/digitenant/reports/clients/growth/list"
+  },
+  "loansapplications": {
+    "base": "/api/digitenant/reports/loans/applications/list"
+  },
+  "loansloans": {
+    "base": "/api/digitenant/reports/loans/loans/list"
+  },
+  "repaymentsrepayments": {
+    "base": "/api/digitenant/reports/repayments/repayments/list"
+  },
+  "loansmonthlyloans": {
+    "base": "/api/digitenant/reports/loans/monthlyloans/list"
+  },
+  "devicesdevicemodels": {
+    "base": "/api/digitenant/reports/devices/devicemodels/list"
+  },
+  "clientsclientrepayments": {
+    "base": "/api/digitenant/reports/clients/clientrepayments/list"
+  },
+  "repaymentsrepaymentbyloan": {
+    "base": "/api/digitenant/reports/repayments/repaymentbyloan/list"
+  },
+  "loanslendingforecast": {
+    "base": "/api/digitenant/reports/loans/lendingforecast/list"
+  },
+  "accountslist": {
+    "base": "/api/digitenant/accountslist/list",
+    "delete": "/api/digitenant/accountslist/list/delete",
+    "import": "/api/digitenant/accountslist/import"
+  },
+  "walletslist": {
+    "base": "/api/digitenant/walletslist/list",
+    "delete": "/api/digitenant/walletslist/list/delete",
+    "import": "/api/digitenant/walletslist/import"
+  },
+  "accountsmoneyin": {
+    "base": "/api/digitenant/accountsmoneyin/list",
+    "delete": "/api/digitenant/accountsmoneyin/list/delete",
+    "import": "/api/digitenant/accountsmoneyin/import"
+  },
+  "accountsmoneyout": {
+    "base": "/api/digitenant/accountsmoneyout/list",
+    "delete": "/api/digitenant/accountsmoneyout/list/delete",
+    "import": "/api/digitenant/accountsmoneyout/import"
+  },
+  "accountstransfers": {
+    "base": "/api/digitenant/accountstransfers/list",
+    "delete": "/api/digitenant/accountstransfers/list/delete",
+    "import": "/api/digitenant/accountstransfers/import"
+  },
+  "walletsmoneyin": {
+    "base": "/api/digitenant/walletsmoneyin/list",
+    "delete": "/api/digitenant/walletsmoneyin/list/delete",
+    "import": "/api/digitenant/walletsmoneyin/import"
+  },
+  "walletsmoneyout": {
+    "base": "/api/digitenant/walletsmoneyout/list",
+    "delete": "/api/digitenant/walletsmoneyout/list/delete",
+    "import": "/api/digitenant/walletsmoneyout/import"
+  },
+  "walletstransfers": {
+    "base": "/api/digitenant/walletstransfers/list",
+    "delete": "/api/digitenant/walletstransfers/list/delete",
+    "import": "/api/digitenant/walletstransfers/import"
+  },
+  "accountsaccountbalances": {
+    "base": "/api/digitenant/reports/accounts/accountbalances/list"
+  },
+  "walletswalletbalances": {
+    "base": "/api/digitenant/reports/wallets/walletbalances/list"
+  },
+  "accountsaccountmoneyin": {
+    "base": "/api/digitenant/reports/accounts/accountmoneyin/list"
+  },
+  "accountsaccountmoneyout": {
+    "base": "/api/digitenant/reports/accounts/accountmoneyout/list"
+  },
+  "accountsaccounttransfers": {
+    "base": "/api/digitenant/reports/accounts/accounttransfers/list"
+  },
+  "walletswalletmoneyin": {
+    "base": "/api/digitenant/reports/wallets/walletmoneyin/list"
+  },
+  "walletswalletmoneyout": {
+    "base": "/api/digitenant/reports/wallets/walletmoneyout/list"
+  },
+  "walletswallettransfers": {
+    "base": "/api/digitenant/reports/wallets/wallettransfers/list"
+  },
+  "accountsaccountforecast": {
+    "base": "/api/digitenant/reports/accounts/accountforecast/list"
+  },
+  "walletswalletforecast": {
+    "base": "/api/digitenant/reports/wallets/walletforecast/list"
+  },
+  "systemusers": {
+    "base": "/api/digitenant/systemusers/list",
+    "delete": "/api/digitenant/systemusers/list/delete",
+    "import": "/api/digitenant/systemusers/import"
+  },
+  "expensescategories": {
+    "base": "/api/digitenant/expensescategories/list",
+    "delete": "/api/digitenant/expensescategories/list/delete",
+    "import": "/api/digitenant/expensescategories/import"
+  },
+  "expenseslist": {
+    "base": "/api/digitenant/expenseslist/list",
+    "delete": "/api/digitenant/expenseslist/list/delete",
+    "import": "/api/digitenant/expenseslist/import"
+  },
+  "maintenancerequests": {
+    "base": "/api/digitenant/maintenancerequests/list",
+    "delete": "/api/digitenant/maintenancerequests/list/delete",
+    "import": "/api/digitenant/maintenancerequests/import"
+  },
+  "maintenancevendors": {
+    "base": "/api/digitenant/maintenancevendors/list",
+    "delete": "/api/digitenant/maintenancevendors/list/delete",
+    "import": "/api/digitenant/maintenancevendors/import"
+  },
+  "propertieslandlords": {
+    "base": "/api/digitenant/propertieslandlords/list",
+    "delete": "/api/digitenant/propertieslandlords/list/delete",
+    "import": "/api/digitenant/propertieslandlords/import"
+  },
+  "propertieslist": {
+    "base": "/api/digitenant/propertieslist/list",
+    "delete": "/api/digitenant/propertieslist/list/delete",
+    "import": "/api/digitenant/propertieslist/import"
+  },
+  "propertiesunits": {
+    "base": "/api/digitenant/propertiesunits/list",
+    "delete": "/api/digitenant/propertiesunits/list/delete",
+    "import": "/api/digitenant/propertiesunits/import"
+  },
+  "rentinvoices": {
+    "base": "/api/digitenant/rentinvoices/list",
+    "delete": "/api/digitenant/rentinvoices/list/delete",
+    "import": "/api/digitenant/rentinvoices/import"
+  },
+  "rentpayments": {
+    "base": "/api/digitenant/rentpayments/list",
+    "delete": "/api/digitenant/rentpayments/list/delete",
+    "import": "/api/digitenant/rentpayments/import"
+  },
+  "tenantsleases": {
+    "base": "/api/digitenant/tenantsleases/list",
+    "delete": "/api/digitenant/tenantsleases/list/delete",
+    "import": "/api/digitenant/tenantsleases/import"
+  },
+  "tenantslist": {
+    "base": "/api/digitenant/tenantslist/list",
+    "delete": "/api/digitenant/tenantslist/list/delete",
+    "import": "/api/digitenant/tenantslist/import"
+  },
+  "utilitiesmeters": {
+    "base": "/api/digitenant/utilitiesmeters/list",
+    "delete": "/api/digitenant/utilitiesmeters/list/delete",
+    "import": "/api/digitenant/utilitiesmeters/import"
+  },
+  "utilitiesreadings": {
+    "base": "/api/digitenant/utilitiesreadings/list",
+    "delete": "/api/digitenant/utilitiesreadings/list/delete",
+    "import": "/api/digitenant/utilitiesreadings/import"
+  },
+  "propertiespayouts": {
+    "base": "/api/digitenant/propertiespayouts/list",
+    "delete": "/api/digitenant/propertiespayouts/list/delete",
+    "import": "/api/digitenant/propertiespayouts/import"
+  },
+  "rentitems": {
+    "base": "/api/digitenant/rentitems/list",
+    "delete": "/api/digitenant/rentitems/list/delete",
+    "import": "/api/digitenant/rentitems/import"
+  },
+  "rentcollections": {
+    "base": "/api/digitenant/reports/rent/collections/list"
+  },
+  "rentbilling": {
+    "base": "/api/digitenant/reports/rent/billing/list"
+  },
+  "arrearstenants": {
+    "base": "/api/digitenant/reports/arrears/tenants/list"
+  },
+  "arrearsproperties": {
+    "base": "/api/digitenant/reports/arrears/properties/list"
+  },
+  "incomeproperties": {
+    "base": "/api/digitenant/reports/income/properties/list"
+  },
+  "landlordsstatement": {
+    "base": "/api/digitenant/reports/landlords/statement/list"
+  }
+}

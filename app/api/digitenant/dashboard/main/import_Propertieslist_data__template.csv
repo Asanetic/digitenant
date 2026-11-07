@@ -1,0 +1,2 @@
+properties_list_identifier,property_name,property_code,property_type,location,address,landlord_id,property_status
+"#NOTE: properties_list_identifier = a unique value to identify this record and its related data in the system, e.g. account_number or registration number. Leave blank to auto-generate. Delete this row before uploading.",,,,,,,

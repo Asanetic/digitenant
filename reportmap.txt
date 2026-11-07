@@ -1,0 +1,297 @@
+report Collections "Rent Collections"
+  nest rent
+  by month|day|year
+  date payment_date
+  entity rental_rent_collections
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  filter method = payment_method
+
+  # payment_status values in your data: COMPLETED
+  payments = count rent_payments where payment_status=COMPLETED "Payments"
+  collected = sum rent_payments.amount where payment_status=COMPLETED "Rent Collected" money
+  avg_payment = collected / payments "Average Payment" money
+  chg = change(collected) "Collected vs Previous"
+
+  forecast collected next 3
+  forecast payments next 3
+
+  headline {label}: {payments} payments, {collected} collected[, {updown} {abs(chg)}% on {prev_label}].
+  remark payments == 0 | watch | No payments | No rent payments were received in {label}.
+  remark chg !== null && chg <= -20 | watch | Collections dropped | {label}: {collected} collected, down {abs(chg)}% on {prev_label}.
+  remark true | neutral | Collections | {payments} payments totalling {collected}, averaging {avg_payment}.
+
+
+report Billing "Billed vs Collected"
+  nest rent
+  by month|year
+  date invoice_date
+  entity rental_rent_billing
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  filter status = invoice_status
+  filter property = property_id
+
+  # outstanding is worked out as billed minus paid, so it does not depend on balance_amount being filled
+  invoices = count rent_invoices "Invoices Issued"
+  billed = sum rent_invoices.total_amount "Billed" money
+  collected = sum rent_invoices.paid_amount "Collected" money
+  outstanding = billed - collected "Outstanding" money
+  rate = round(collected / billed * 100) "Collected %"
+  chg = change(billed) "Billed vs Previous"
+
+  forecast billed next 3
+
+  headline {label}: {billed} billed, {rate}% collected, {outstanding} outstanding.
+  remark billed == 0 | neutral | Nothing billed | No invoices were issued in {label}.
+  remark rate !== null && rate < 70 | bad | Weak collection | Only {rate}% of the {billed} billed in {label} was collected, and {outstanding} is outstanding.
+  remark rate !== null && rate < 90 | watch | Gaps | {rate}% of the {billed} billed in {label} was collected, with {outstanding} still outstanding.
+  remark true | good | On track | {rate}% of the {billed} billed in {label} was collected.
+
+
+report Tenants "Arrears by Tenant"
+  nest arrears
+  by dimension
+  date due_date
+  entity rental_arrears_tenants
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group tenant_id
+  rows "Tenant"
+  labels tenants_list.tenant_id > tenant_name
+  sort owed desc
+
+  # Set the date range to end today: it covers invoices that fell due in that range.
+  # Owed = billed minus paid, so it works without balance_amount or invoice_status.
+  invoices = count rent_invoices "Invoices Due"
+  unpaid_inv = count rent_invoices where paid_amount=0 "Nothing Paid"
+  billed = sum rent_invoices.total_amount "Billed" money
+  paid = sum rent_invoices.paid_amount "Paid" money
+  owed = billed - paid "Balance Owed" money
+  share = share(owed) "Share of Arrears"
+
+  headline {label} owes the most: {owed} across {invoices} invoices, {unpaid_inv} with nothing paid.
+  remark unpaid_inv > 0 | bad | Not paying | {label} has {unpaid_inv} invoices with nothing paid and owes {owed} in total.
+  remark owed > 0 | watch | Balance owed | {label} owes {owed} of the {billed} billed.
+  remark true | good | Up to date | {label} has paid everything due in this period.
+
+
+report Properties "Arrears by Property"
+  nest arrears
+  by dimension
+  date due_date
+  entity rental_arrears_properties
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group property_id
+  rows "Property"
+  labels properties_list.property_id > property_name
+  sort owed desc
+
+  # needs rent_invoices.property_id filled (see rental_data_repair.sql)
+  invoices = count rent_invoices "Invoices Due"
+  unpaid_inv = count rent_invoices where paid_amount=0 "Nothing Paid"
+  billed = sum rent_invoices.total_amount "Billed" money
+  paid = sum rent_invoices.paid_amount "Paid" money
+  owed = billed - paid "Balance Owed" money
+  arrears_rate = round(owed / billed * 100) "Arrears %"
+  share = share(owed) "Share of Arrears"
+
+  headline {label} has the most arrears: {owed} owed, {arrears_rate}% of what was billed.
+  remark arrears_rate !== null && arrears_rate >= 30 | bad | Heavy arrears | {label}: {owed} owed, {arrears_rate}% of the {billed} billed.
+  remark owed > 0 | watch | Balance owed | {label} owes {owed} across {invoices} invoices.
+  remark true | good | Up to date | {label} has nothing owing in this period.
+
+
+report Properties "Income by Property"
+  nest income
+  by dimension
+  date payment_date
+  entity rental_income_properties
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group property_id
+  rows "Property"
+  labels properties_list.property_id > property_name
+  sort collected desc
+
+  # payments reach the property through their invoice (rent_invoices.property_id)
+  payments = count rent_payments where payment_status=COMPLETED via rent_invoices on invoice_id=invoice_id by=payment_date "Payments"
+  collected = sum rent_payments.amount where payment_status=COMPLETED via rent_invoices on invoice_id=invoice_id by=payment_date "Rent Collected" money
+  billed = sum rent_invoices.total_amount by=invoice_date "Billed" money
+  rate = round(collected / billed * 100) "Collected %"
+  share = share(collected) "Share of Income"
+
+  headline {label} earns the most: {collected} from {payments} payments, {share}% of all rent collected.
+  remark collected == 0 | bad | No income | {label} received no rent in this period.
+  remark rate !== null && rate < 70 | watch | Low collection | {label}: only {rate}% of the {billed} billed was collected.
+  remark true | good | Performing | {label}: {collected} collected from {payments} payments, {share}% of total income.
+
+
+report Landlords "Income by Landlord"
+  nest income
+  by dimension
+  date payment_date
+  entity rental_income_landlords
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group landlord_id
+  rows "Landlord"
+  labels properties_landlords.landlord_id > landlord_name
+  sort collected desc
+
+  # works from invoices, so it does not need payouts to exist yet
+  payments = count rent_payments where payment_status=COMPLETED via rent_invoices on invoice_id=invoice_id by=payment_date "Payments"
+  collected = sum rent_payments.amount where payment_status=COMPLETED via rent_invoices on invoice_id=invoice_id by=payment_date "Rent Collected" money
+  billed = sum rent_invoices.total_amount by=invoice_date "Billed" money
+  rate = round(collected / billed * 100) "Collected %"
+  share = share(collected) "Share of Income"
+
+  headline {label} collected the most: {collected} from {payments} payments, {share}% of the total.
+  remark collected == 0 | bad | No income | {label} received no rent in this period.
+  remark rate !== null && rate < 70 | watch | Low collection | {label}: only {rate}% of the {billed} billed was collected.
+  remark true | good | Performing | {label}: {collected} collected, {share}% of total income.
+
+
+report Methods "Payment Methods"
+  nest rent
+  by dimension
+  date payment_date
+  entity rental_rent_methods
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group payment_method
+  rows "Method"
+  sort collected desc
+
+  payments = count rent_payments where payment_status=COMPLETED "Payments"
+  collected = sum rent_payments.amount where payment_status=COMPLETED "Rent Collected" money
+  avg_payment = collected / payments "Average Payment" money
+  share = share(collected) "Share of Collections"
+
+  headline {label} is the most used: {payments} payments, {collected} collected, {share}% of all rent.
+  remark payments == 0 | neutral | Unused | Nothing was received by {label} in this period.
+  remark true | neutral | Method | {label}: {payments} payments totalling {collected}, averaging {avg_payment}.
+
+
+report Expiries "Lease Expiries"
+  nest tenants
+  by month|year
+  date end_date
+  entity rental_tenants_expiries
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  # pick a future range to see which leases are coming up for renewal
+  leases = count tenants_leases where lease_status=ACTIVE "Leases Ending"
+  rent_at_risk = sum tenants_leases.rent_amount where lease_status=ACTIVE "Monthly Rent Ending" money
+  deposits = sum tenants_leases.deposit_amount where lease_status=ACTIVE "Deposits Held" money
+
+  headline {label}: {leases} leases end, {rent_at_risk} monthly rent up for renewal.
+  remark leases == 0 | neutral | None ending | No active leases end in {label}.
+  remark true | watch | Renewals due | {leases} leases end in {label}, carrying {rent_at_risk} a month.
+
+
+report Categories "Maintenance by Category"
+  nest maintenance
+  by dimension
+  date request_date
+  entity rental_maintenance_categories
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group category
+  rows "Category"
+  sort requests desc
+
+  requests = count maintenance_requests "Requests"
+  urgent = count maintenance_requests where priority=URGENT "Urgent"
+  high = count maintenance_requests where priority=HIGH "High"
+  cost = sum maintenance_requests.cost_amount "Cost" money
+  share = share(requests) "Share of Requests"
+
+  headline {label} has the most requests: {requests}, {urgent} urgent and {high} high priority.
+  remark urgent > 0 | bad | Urgent work | {label} has {urgent} urgent requests.
+  remark high > 0 | watch | High priority | {label} has {high} high priority requests.
+  remark true | neutral | Maintenance | {label}: {requests} requests, {share}% of all.
+
+
+report Vendors "Maintenance by Vendor"
+  nest maintenance
+  by dimension
+  date request_date
+  entity rental_maintenance_vendors
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group vendor_id
+  rows "Vendor"
+  labels maintenance_vendors.vendor_id > vendor_name
+  sort jobs desc
+
+  jobs = count maintenance_requests "Jobs"
+  urgent = count maintenance_requests where priority=URGENT "Urgent"
+  cost = sum maintenance_requests.cost_amount "Cost" money
+  share = share(jobs) "Share of Jobs"
+
+  headline {label} has the most jobs: {jobs}, costing {cost}.
+  remark urgent > 0 | watch | Urgent jobs | {label} handled {urgent} urgent requests out of {jobs}.
+  remark true | neutral | Vendor | {label}: {jobs} jobs, {share}% of all work.
+
+
+report Statement "Landlord Payouts"
+  nest landlords
+  by dimension
+  date period_end
+  entity rental_landlords_statement
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group landlord_id
+  rows "Landlord"
+  labels properties_landlords.landlord_id > landlord_name
+  sort net desc
+
+  # reads properties_payouts, so it stays empty until payouts are generated
+  # assumes payout_status=PAID once the landlord has been remitted
+  statements = count properties_payouts "Statements"
+  collected = sum properties_payouts.collected_amount "Rent Collected" money
+  expenses = sum properties_payouts.expenses_amount "Expenses" money
+  commission = sum properties_payouts.commission_amount "Commission" money
+  net = sum properties_payouts.net_amount "Net Payable" money
+  paid_out = sum properties_payouts.net_amount where payout_status=PAID "Paid Out" money
+  owed = net - paid_out "Still Owed" money
+  share = share(net) "Share of Payouts"
+
+  headline {label} has the largest payout: {net} net from {collected} collected, {owed} still owed.
+  remark owed > 0 | watch | Payout due | {label}: {owed} still to be paid out of {net} net.
+  remark true | good | Settled | {label}: {net} net paid out after {commission} commission and {expenses} expenses.

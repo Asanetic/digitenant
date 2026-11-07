@@ -1,0 +1,26 @@
+report Billing "Billed vs Collected"
+  by month|year
+  date invoice_date
+  entity rental_rent_billing
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  filter status = invoice_status
+  filter property = property_id
+
+  invoices = count rent_invoices "Invoices Issued"
+  billed = sum rent_invoices.total_amount "Billed" money
+  collected = sum rent_invoices.paid_amount "Collected" money
+  outstanding = sum rent_invoices.balance_amount "Outstanding" money
+  rate = round(collected / billed * 100) "Collected %"
+  chg = change(billed) "Billed vs Previous"
+
+  forecast billed next 3
+
+  headline {label}: {billed} billed, {rate}% collected, {outstanding} outstanding.
+  remark billed == 0 | neutral | Nothing billed | No invoices were issued in {label}.
+  remark rate !== null && rate < 70 | bad | Weak collection | Only {rate}% of the {billed} billed in {label} was collected, and {outstanding} is outstanding.
+  remark rate !== null && rate < 90 | watch | Gaps | {rate}% of the {billed} billed in {label} was collected, with {outstanding} still outstanding.
+  remark true | good | On track | {rate}% of the {billed} billed in {label} was collected.

@@ -1,0 +1,2 @@
+rent_payments_identifier,payment_date,amount,payment_method,ref_no,invoice_id,tenant_id,payment_status
+"#NOTE: rent_payments_identifier = a unique value to identify this record and its related data in the system, e.g. account_number or registration number. Leave blank to auto-generate. Delete this row before uploading.",,,,,,,

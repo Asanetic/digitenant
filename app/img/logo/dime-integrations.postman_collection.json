@@ -1,0 +1,1852 @@
+{
+  "info": {
+    "name": "Dime - OAuth, SMS, Customers, Loans and Transion",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Set base_url, consumer_key and consumer_secret, then run Get access token. Token is saved automatically. All resource requests inherit Bearer auth. Set sample=true for authenticated synthetic responses with no live actions. sample=false (the default) or omission uses live APIs. Transion examples are illustrative. Callback requires bearer authentication."
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "consumer_key",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "consumer_secret",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "sample",
+      "value": "false",
+      "type": "string"
+    },
+    {
+      "key": "phone_number",
+      "value": "254700000000",
+      "type": "string"
+    },
+    {
+      "key": "customer_id",
+      "value": "00000000-0000-4000-8000-000000000001",
+      "type": "string"
+    },
+    {
+      "key": "loan_id",
+      "value": "00000000-0000-4000-8000-000000000002",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "OAuth",
+      "item": [
+        {
+          "name": "Get access token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/oauth/token/",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"grant_type\": \"client_credentials\",\n  \"consumer_key\": \"{{consumer_key}}\",\n  \"consumer_secret\": \"{{consumer_secret}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/oauth/token/",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"grant_type\": \"client_credentials\",\n  \"consumer_key\": \"{{consumer_key}}\",\n  \"consumer_secret\": \"{{consumer_secret}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "auth": {
+                  "type": "noauth"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"access_token\": \"<bearer token>\",\n  \"token_type\": \"Bearer\",\n  \"expires_in\": 3600\n}"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Token issued\", () => pm.response.to.have.status(200));",
+                  "if (pm.response.code === 200) { pm.collectionVariables.set(\"access_token\", pm.response.json().access_token); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SMS and lookups",
+      "item": [
+        {
+          "name": "Send SMS",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/sms/send/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone_number\": \"{{phone_number}}\",\n  \"message\": \"Hello from Dime.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/api/v1/sms/send/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phone_number\": \"{{phone_number}}\",\n  \"message\": \"Hello from Dime.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"data\": {\n    \"message_id\": \"sample-sms-001\",\n    \"status\": \"Success\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Lookup customers by phone",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/customers/?phone_number={{phone_number}}&limit=50&offset=0&sample={{sample}}"
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/v1/customers/?phone_number={{phone_number}}&limit=50&offset=0&sample={{sample}}"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"count\": 1,\n  \"limit\": 50,\n  \"offset\": 0,\n  \"results\": [\n    {\n      \"id\": \"00000000-0000-4000-8000-000000000001\",\n      \"first_name\": \"Sample\",\n      \"last_name\": \"Customer\",\n      \"phone_number\": \"254700000000\",\n      \"email\": \"sample@example.com\",\n      \"identity_number\": \"SAMPLE001\",\n      \"state__name\": \"Active\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Lookup customer by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/customers/?customer_id={{customer_id}}&sample={{sample}}"
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/v1/customers/?customer_id={{customer_id}}&sample={{sample}}"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"count\": 1,\n  \"limit\": 50,\n  \"offset\": 0,\n  \"results\": [\n    {\n      \"id\": \"00000000-0000-4000-8000-000000000001\",\n      \"first_name\": \"Sample\",\n      \"last_name\": \"Customer\",\n      \"phone_number\": \"254700000000\",\n      \"email\": \"sample@example.com\",\n      \"identity_number\": \"SAMPLE001\",\n      \"state__name\": \"Active\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Lookup loans by customer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/loans/?customer_id={{customer_id}}&limit=50&offset=0&sample={{sample}}"
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/v1/loans/?customer_id={{customer_id}}&limit=50&offset=0&sample={{sample}}"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"count\": 1,\n  \"limit\": 50,\n  \"offset\": 0,\n  \"results\": [\n    {\n      \"id\": \"00000000-0000-4000-8000-000000000002\",\n      \"customer_id\": \"00000000-0000-4000-8000-000000000001\",\n      \"loan_disk_id\": \"SAMPLE-LOAN-001\",\n      \"amount\": \"20000.00\",\n      \"balance\": \"15000.00\",\n      \"due_date\": \"2026-12-01T12:00:00Z\",\n      \"state__name\": \"Active\",\n      \"product_id\": null\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Lookup loan by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{base_url}}/api/v1/loans/?loan_id={{loan_id}}&sample={{sample}}"
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": "{{base_url}}/api/v1/loans/?loan_id={{loan_id}}&sample={{sample}}"
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"count\": 1,\n  \"limit\": 50,\n  \"offset\": 0,\n  \"results\": [\n    {\n      \"id\": \"00000000-0000-4000-8000-000000000002\",\n      \"customer_id\": \"00000000-0000-4000-8000-000000000001\",\n      \"loan_disk_id\": \"SAMPLE-LOAN-001\",\n      \"amount\": \"20000.00\",\n      \"balance\": \"15000.00\",\n      \"due_date\": \"2026-12-01T12:00:00Z\",\n      \"state__name\": \"Active\",\n      \"product_id\": null\n    }\n  ]\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Transion - all endpoints",
+      "item": [
+        {
+          "name": "enroll/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/enroll/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"imei_list\": [\n    \"350000000000001\"\n  ],\n  \"pre_lock_flag\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/enroll/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"imei_list\": [\n    \"350000000000001\"\n  ],\n  \"pre_lock_flag\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "unenroll/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/unenroll/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"imei_list\": [\n    \"350000000000001\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/unenroll/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"imei_list\": [\n    \"350000000000001\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "repay/update/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/repay/update/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\",\n  \"next_repay_time\": \"2026-12-01 12:00:00\",\n  \"repayed_amt\": 1000,\n  \"total_amt\": 20000,\n  \"next_repay_amt\": 1000,\n  \"currency_type\": \"KES\",\n  \"current_term\": 1,\n  \"total_term\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/repay/update/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\",\n  \"next_repay_time\": \"2026-12-01 12:00:00\",\n  \"repayed_amt\": 1000,\n  \"total_amt\": 20000,\n  \"next_repay_amt\": 1000,\n  \"currency_type\": \"KES\",\n  \"current_term\": 1,\n  \"total_term\": 20\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "repay/batch/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/repay/batch/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"update_info_list\": [\n    {\n      \"deviceTag\": \"sample-device-001\",\n      \"nextRepayTime\": \"2026-12-01 12:00:00\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/repay/batch/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"update_info_list\": [\n    {\n      \"deviceTag\": \"sample-device-001\",\n      \"nextRepayTime\": \"2026-12-01 12:00:00\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "lock/remove/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/lock/remove/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/lock/remove/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "lock/batch-remove/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/lock/batch-remove/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"remove_info_list\": [\n    {\n      \"deviceTag\": \"sample-device-001\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/lock/batch-remove/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"remove_info_list\": [\n    {\n      \"deviceTag\": \"sample-device-001\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "lock/toggle/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/lock/toggle/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\",\n  \"flag\": \"UNLOCK\",\n  \"reason\": \"Payment received\",\n  \"toggled_by\": \"API client\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/lock/toggle/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\",\n  \"flag\": \"UNLOCK\",\n  \"reason\": \"Payment received\",\n  \"toggled_by\": \"API client\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "unlock/temp/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/unlock/temp/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\",\n  \"temp_lock_time\": 24,\n  \"time_unit\": \"HOURS\",\n  \"reason\": \"Support\",\n  \"granted_by\": \"API client\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/unlock/temp/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\",\n  \"temp_lock_time\": 24,\n  \"time_unit\": \"HOURS\",\n  \"reason\": \"Support\",\n  \"granted_by\": \"API client\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "unlock/pin/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/unlock/pin/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\",\n  \"captcha\": \"1234\",\n  \"requested_by\": \"API client\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/unlock/pin/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\",\n  \"captcha\": \"1234\",\n  \"requested_by\": \"API client\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": {\n    \"pin\": \"0000\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "device/state/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/device/state/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/device/state/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": {\n    \"deviceTag\": \"sample-device-001\",\n    \"imei\": \"350000000000001\",\n    \"state\": \"sample\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "device/state/batch/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/device/state/batch/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_tags\": [\n    \"sample-device-001\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/device/state/batch/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"device_tags\": [\n    \"sample-device-001\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": {\n    \"deviceTag\": \"sample-device-001\",\n    \"imei\": \"350000000000001\",\n    \"state\": \"sample\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "device/by-imei/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/device/by-imei/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/device/by-imei/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": {\n    \"deviceTag\": \"sample-device-001\",\n    \"imei\": \"350000000000001\",\n    \"state\": \"sample\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "device/model/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/device/model/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/device/model/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": {\n    \"deviceTag\": \"sample-device-001\",\n    \"imei\": \"350000000000001\",\n    \"state\": \"sample\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "device/factory/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/device/factory/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/device/factory/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": {\n    \"deviceTag\": \"sample-device-001\",\n    \"imei\": \"350000000000001\",\n    \"state\": \"sample\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "device/gps/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/device/gps/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/device/gps/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": {\n    \"deviceTag\": \"sample-device-001\",\n    \"imei\": \"350000000000001\",\n    \"state\": \"sample\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "device/swap/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/device/swap/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"old_device_tag\": \"sample-device-001\",\n  \"old_imei\": \"350000000000001\",\n  \"new_imei\": \"350000000000002\",\n  \"new_model\": \"Sample phone\",\n  \"swapped_by\": \"API client\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/device/swap/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"old_device_tag\": \"sample-device-001\",\n  \"old_imei\": \"350000000000001\",\n  \"new_imei\": \"350000000000002\",\n  \"new_model\": \"Sample phone\",\n  \"swapped_by\": \"API client\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": {\n    \"deviceTag\": \"sample-device-001\",\n    \"imei\": \"350000000000001\",\n    \"state\": \"sample\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "push/single/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/push/single/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\",\n  \"push_type\": 1,\n  \"title\": \"Payment reminder\",\n  \"content\": \"Your payment is due soon.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/push/single/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\",\n  \"push_type\": 1,\n  \"title\": \"Payment reminder\",\n  \"content\": \"Your payment is due soon.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "push/bulk/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/push/bulk/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"push_type\": 1,\n  \"push_info_list\": [\n    {\n      \"deviceTag\": \"sample-device-001\",\n      \"title\": \"Reminder\",\n      \"content\": \"Your payment is due soon.\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/push/bulk/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"push_type\": 1,\n  \"push_info_list\": [\n    {\n      \"deviceTag\": \"sample-device-001\",\n      \"title\": \"Reminder\",\n      \"content\": \"Your payment is due soon.\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "config/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/config/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/config/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": {\n    \"companyName\": \"Sample Company\"\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "config/lock-rule/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/config/lock-rule/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rule_num\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/config/lock-rule/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"rule_num\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "config/customize/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/config/customize/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"company_name\": \"Sample Company\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/config/customize/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"company_name\": \"Sample Company\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "config/device-rule/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/config/device-rule/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\",\n  \"rule_num\": 1,\n  \"device_title\": \"Reminder\",\n  \"device_tips\": \"Please make your payment.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/config/device-rule/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\",\n  \"rule_num\": 1,\n  \"device_title\": \"Reminder\",\n  \"device_tips\": \"Please make your payment.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "license/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/license/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/license/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": {\n    \"remaining\": 100\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "find-phone/submit/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/find-phone/submit/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\",\n  \"contact_information\": \"support@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/find-phone/submit/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\",\n  \"contact_information\": \"support@example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "find-phone/close/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/find-phone/close/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/find-phone/close/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "find-phone/status/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/find-phone/status/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/find-phone/status/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"device_tag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "feedback/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/feedback/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"start_time\": \"2026-11-01\",\n  \"end_time\": \"2026-11-30\",\n  \"page_num\": 1,\n  \"page_size\": 20,\n  \"feedback_type\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/feedback/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"start_time\": \"2026-11-01\",\n  \"end_time\": \"2026-11-30\",\n  \"page_num\": 1,\n  \"page_size\": 20,\n  \"feedback_type\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"success\": true,\n  \"message\": \"Synthetic example; no operation performed\",\n  \"data\": {\n    \"records\": [],\n    \"total\": 0\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "callback/device/",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/paytrigger/callback/device/?sample={{sample}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"deviceTag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\",\n  \"notifyType\": 1000,\n  \"productModel\": \"Sample phone\",\n  \"serverState\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Sample success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{base_url}}/paytrigger/callback/device/?sample={{sample}}",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"deviceTag\": \"sample-device-001\",\n  \"imei\": \"350000000000001\",\n  \"notifyType\": 1000,\n  \"productModel\": \"Sample phone\",\n  \"serverState\": 1\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sample\": true,\n  \"code\": 200,\n  \"message\": \"Success\"\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

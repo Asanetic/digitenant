@@ -1,0 +1,25 @@
+report Tenants "Arrears by Tenant"
+  by dimension
+  date due_date
+  entity rental_arrears_tenants
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group tenant_id
+  rows "Tenant"
+  labels tenants_list.tenant_id > tenant_name
+  sort overdue_amount desc
+
+  # assumes invoice_status values: unpaid, partial, paid, overdue
+  open_invoices = count rent_invoices where invoice_status!=paid "Open Invoices"
+  unpaid = sum rent_invoices.balance_amount where invoice_status!=paid "Unpaid Balance" money
+  late = count rent_invoices where invoice_status=overdue "Overdue Invoices"
+  overdue_amount = sum rent_invoices.balance_amount where invoice_status=overdue "Overdue Amount" money
+  share = share(overdue_amount) "Share of Arrears"
+
+  headline {label} owes the most: {overdue_amount} overdue across {late} invoices, {unpaid} unpaid in total.
+  remark late > 0 | bad | Overdue | {label} has {late} overdue invoices worth {overdue_amount}.
+  remark open_invoices > 0 | watch | Unpaid | {label} has {unpaid} unpaid across {open_invoices} open invoices, none overdue yet.
+  remark true | good | Up to date | {label} has nothing outstanding in this period.

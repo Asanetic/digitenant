@@ -1,0 +1,193 @@
+RELATIONS REPORT — 11/3/2026, 5:22:27 PM — app: digitenant
+Modules found: 16   FK links found: 18
+
+LINKED (18)
+  rentitems.invoice_id -> rent_invoices
+     rentitems: view_rentitems_rentinvoices_profile
+     rentinvoices: view_rentinvoices_rentitems
+     rentinvoices: add_rentinvoices_rentitems
+     rentitems: filter_rentitems_rentinvoices
+  expenseslist.category_id -> expenses_categories
+     expenseslist: view_expenseslist_expensescategories_profile
+     expensescategories: view_expensescategories_expenseslist
+     expensescategories: add_expensescategories_expenseslist
+     expenseslist: filter_expenseslist_expensescategories
+  expenseslist.property_id -> properties_list
+     expenseslist: view_expenseslist_propertieslist_profile
+     propertieslist: view_propertieslist_expenseslist
+     propertieslist: add_propertieslist_expenseslist
+     expenseslist: filter_expenseslist_propertieslist
+  rentinvoices.lease_id -> tenants_leases
+     rentinvoices: view_rentinvoices_tenantsleases_profile
+     tenantsleases: view_tenantsleases_rentinvoices
+     tenantsleases: add_tenantsleases_rentinvoices   also maps tenant_id
+     rentinvoices: filter_rentinvoices_tenantsleases
+  rentinvoices.tenant_id -> tenants_list
+     rentinvoices: view_rentinvoices_tenantslist_profile
+     tenantslist: view_tenantslist_rentinvoices
+     tenantslist: add_tenantslist_rentinvoices
+     rentinvoices: filter_rentinvoices_tenantslist
+  rentpayments.invoice_id -> rent_invoices
+     rentpayments: view_rentpayments_rentinvoices_profile
+     rentinvoices: view_rentinvoices_rentpayments
+     rentinvoices: add_rentinvoices_rentpayments   also maps tenant_id
+     rentpayments: filter_rentpayments_rentinvoices
+  rentpayments.tenant_id -> tenants_list
+     rentpayments: view_rentpayments_tenantslist_profile
+     tenantslist: view_tenantslist_rentpayments
+     tenantslist: add_tenantslist_rentpayments
+     rentpayments: filter_rentpayments_tenantslist
+  tenantsleases.tenant_id -> tenants_list
+     tenantsleases: view_tenantsleases_tenantslist_profile
+     tenantslist: view_tenantslist_tenantsleases
+     tenantslist: add_tenantslist_tenantsleases
+     tenantsleases: filter_tenantsleases_tenantslist
+  tenantsleases.unit_id -> properties_units
+     tenantsleases: view_tenantsleases_propertiesunits_profile
+     propertiesunits: view_propertiesunits_tenantsleases
+     propertiesunits: add_propertiesunits_tenantsleases
+     tenantsleases: filter_tenantsleases_propertiesunits
+  propertieslist.landlord_id -> properties_landlords
+     propertieslist: view_propertieslist_propertieslandlords_profile
+     propertieslandlords: view_propertieslandlords_propertieslist
+     propertieslandlords: add_propertieslandlords_propertieslist
+     propertieslist: filter_propertieslist_propertieslandlords
+  propertiesunits.property_id -> properties_list
+     propertiesunits: view_propertiesunits_propertieslist_profile
+     propertieslist: view_propertieslist_propertiesunits
+     propertieslist: add_propertieslist_propertiesunits
+     propertiesunits: filter_propertiesunits_propertieslist
+  utilitiesmeters.unit_id -> properties_units
+     utilitiesmeters: view_utilitiesmeters_propertiesunits_profile
+     propertiesunits: view_propertiesunits_utilitiesmeters
+     propertiesunits: add_propertiesunits_utilitiesmeters
+     utilitiesmeters: filter_utilitiesmeters_propertiesunits
+  propertiespayouts.landlord_id -> properties_landlords
+     propertiespayouts: view_propertiespayouts_propertieslandlords_profile
+     propertieslandlords: view_propertieslandlords_propertiespayouts
+     propertieslandlords: add_propertieslandlords_propertiespayouts
+     propertiespayouts: filter_propertiespayouts_propertieslandlords
+  propertiespayouts.property_id -> properties_list
+     propertiespayouts: view_propertiespayouts_propertieslist_profile
+     propertieslist: view_propertieslist_propertiespayouts
+     propertieslist: add_propertieslist_propertiespayouts   also maps landlord_id
+     propertiespayouts: filter_propertiespayouts_propertieslist
+  utilitiesreadings.meter_id -> utilities_meters
+     utilitiesreadings: view_utilitiesreadings_utilitiesmeters_profile
+     utilitiesmeters: view_utilitiesmeters_utilitiesreadings
+     utilitiesmeters: add_utilitiesmeters_utilitiesreadings
+     utilitiesreadings: filter_utilitiesreadings_utilitiesmeters
+  maintenancerequests.unit_id -> properties_units
+     maintenancerequests: view_maintenancerequests_propertiesunits_profile
+     propertiesunits: view_propertiesunits_maintenancerequests
+     propertiesunits: add_propertiesunits_maintenancerequests
+     maintenancerequests: filter_maintenancerequests_propertiesunits
+  maintenancerequests.tenant_id -> tenants_list
+     maintenancerequests: view_maintenancerequests_tenantslist_profile
+     tenantslist: view_tenantslist_maintenancerequests
+     tenantslist: add_tenantslist_maintenancerequests
+     maintenancerequests: filter_maintenancerequests_tenantslist
+  maintenancerequests.vendor_id -> maintenance_vendors
+     maintenancerequests: view_maintenancerequests_maintenancevendors_profile
+     maintenancevendors: view_maintenancevendors_maintenancerequests
+     maintenancevendors: add_maintenancevendors_maintenancerequests
+     maintenancerequests: filter_maintenancerequests_maintenancevendors
+
+PENDING / PARTIAL (0)
+  (none)
+
+COLUMN FILTERS (54)   — date columns and status/type/category-like columns
+  rentitems.item_type [tag]   rentitems: filter_rentitems_item_type
+  rentitems.reg_date [date]   rentitems: filter_rentitems_reg_date
+  systemusers.regdate [date]   systemusers: filter_systemusers_regdate
+  systemusers.user_gender [tag]   systemusers: filter_systemusers_user_gender
+  systemusers.last_seen [date]   systemusers: filter_systemusers_last_seen
+  systemusers.token_status [tag]   systemusers: filter_systemusers_token_status
+  systemusers.user_role [tag]   systemusers: filter_systemusers_user_role
+  systemusers.account_status [tag]   systemusers: filter_systemusers_account_status
+  tenantslist.tenant_status [tag]   tenantslist: filter_tenantslist_tenant_status
+  tenantslist.reg_date [date]   tenantslist: filter_tenantslist_reg_date
+  expenseslist.expense_date [date]   expenseslist: filter_expenseslist_expense_date
+  expenseslist.reg_date [date]   expenseslist: filter_expenseslist_reg_date
+  rentinvoices.invoice_date [date]   rentinvoices: filter_rentinvoices_invoice_date
+  rentinvoices.due_date [date]   rentinvoices: filter_rentinvoices_due_date
+  rentinvoices.billing_period [tag]   rentinvoices: filter_rentinvoices_billing_period
+  rentinvoices.invoice_status [tag]   rentinvoices: filter_rentinvoices_invoice_status
+  rentinvoices.reg_date [date]   rentinvoices: filter_rentinvoices_reg_date
+  rentpayments.payment_date [date]   rentpayments: filter_rentpayments_payment_date
+  rentpayments.payment_method [tag]   rentpayments: filter_rentpayments_payment_method
+  rentpayments.payment_status [tag]   rentpayments: filter_rentpayments_payment_status
+  rentpayments.reg_date [date]   rentpayments: filter_rentpayments_reg_date
+  tenantsleases.start_date [date]   tenantsleases: filter_tenantsleases_start_date
+  tenantsleases.end_date [date]   tenantsleases: filter_tenantsleases_end_date
+  tenantsleases.lease_status [tag]   tenantsleases: filter_tenantsleases_lease_status
+  tenantsleases.reg_date [date]   tenantsleases: filter_tenantsleases_reg_date
+  propertieslist.property_type [tag]   propertieslist: filter_propertieslist_property_type
+  propertieslist.property_status [tag]   propertieslist: filter_propertieslist_property_status
+  propertieslist.reg_date [date]   propertieslist: filter_propertieslist_reg_date
+  propertiesunits.unit_type [tag]   propertiesunits: filter_propertiesunits_unit_type
+  propertiesunits.unit_status [tag]   propertiesunits: filter_propertiesunits_unit_status
+  propertiesunits.reg_date [date]   propertiesunits: filter_propertiesunits_reg_date
+  utilitiesmeters.utility_type [tag]   utilitiesmeters: filter_utilitiesmeters_utility_type
+  utilitiesmeters.meter_status [tag]   utilitiesmeters: filter_utilitiesmeters_meter_status
+  utilitiesmeters.reg_date [date]   utilitiesmeters: filter_utilitiesmeters_reg_date
+  propertiespayouts.period_start [date]   propertiespayouts: filter_propertiespayouts_period_start
+  propertiespayouts.period_end [date]   propertiespayouts: filter_propertiespayouts_period_end
+  propertiespayouts.payout_date [date]   propertiespayouts: filter_propertiespayouts_payout_date
+  propertiespayouts.payout_status [tag]   propertiespayouts: filter_propertiespayouts_payout_status
+  propertiespayouts.reg_date [date]   propertiespayouts: filter_propertiespayouts_reg_date
+  utilitiesreadings.reading_date [date]   utilitiesreadings: filter_utilitiesreadings_reading_date
+  utilitiesreadings.reg_date [date]   utilitiesreadings: filter_utilitiesreadings_reg_date
+  expensescategories.category_name [tag]   expensescategories: filter_expensescategories_category_name
+  expensescategories.category_type [tag]   expensescategories: filter_expensescategories_category_type
+  expensescategories.reg_date [date]   expensescategories: filter_expensescategories_reg_date
+  maintenancevendors.specialty_type [tag]   maintenancevendors: filter_maintenancevendors_specialty_type
+  maintenancevendors.vendor_status [tag]   maintenancevendors: filter_maintenancevendors_vendor_status
+  maintenancevendors.reg_date [date]   maintenancevendors: filter_maintenancevendors_reg_date
+  maintenancerequests.request_date [date]   maintenancerequests: filter_maintenancerequests_request_date
+  maintenancerequests.category [tag]   maintenancerequests: filter_maintenancerequests_category
+  maintenancerequests.priority [tag]   maintenancerequests: filter_maintenancerequests_priority
+  maintenancerequests.request_status [tag]   maintenancerequests: filter_maintenancerequests_request_status
+  maintenancerequests.reg_date [date]   maintenancerequests: filter_maintenancerequests_reg_date
+  propertieslandlords.landlord_status [tag]   propertieslandlords: filter_propertieslandlords_landlord_status
+  propertieslandlords.reg_date [date]   propertieslandlords: filter_propertieslandlords_reg_date
+
+ROW MENU LIMIT (5 per module) — these are on the profile page only, not in the row dropdown
+  tenantslist: add_tenantslist_rentinvoices, add_tenantslist_rentpayments, add_tenantslist_tenantsleases
+  rentinvoices: add_rentinvoices_rentpayments
+  propertieslist: add_propertieslist_propertiespayouts, add_propertieslist_propertiesunits
+  propertiesunits: add_propertiesunits_tenantsleases, add_propertiesunits_utilitiesmeters
+
+FILES CHANGED (32) — previous copy of each is in <module>/_recycled/
+  app/digitenant/rentitems/logicControl/actionsRegistry.js
+  app/digitenant/rentitems/RentitemsSchema.js
+  app/digitenant/systemusers/logicControl/actionsRegistry.js
+  app/digitenant/systemusers/SystemusersSchema.js
+  app/digitenant/tenantslist/logicControl/actionsRegistry.js
+  app/digitenant/tenantslist/TenantslistSchema.js
+  app/digitenant/expenseslist/logicControl/actionsRegistry.js
+  app/digitenant/expenseslist/ExpenseslistSchema.js
+  app/digitenant/rentinvoices/logicControl/actionsRegistry.js
+  app/digitenant/rentinvoices/RentinvoicesSchema.js
+  app/digitenant/rentpayments/logicControl/actionsRegistry.js
+  app/digitenant/rentpayments/RentpaymentsSchema.js
+  app/digitenant/tenantsleases/logicControl/actionsRegistry.js
+  app/digitenant/tenantsleases/TenantsleasesSchema.js
+  app/digitenant/propertieslist/logicControl/actionsRegistry.js
+  app/digitenant/propertieslist/PropertieslistSchema.js
+  app/digitenant/propertiesunits/logicControl/actionsRegistry.js
+  app/digitenant/propertiesunits/PropertiesunitsSchema.js
+  app/digitenant/utilitiesmeters/logicControl/actionsRegistry.js
+  app/digitenant/utilitiesmeters/UtilitiesmetersSchema.js
+  app/digitenant/propertiespayouts/logicControl/actionsRegistry.js
+  app/digitenant/propertiespayouts/PropertiespayoutsSchema.js
+  app/digitenant/utilitiesreadings/logicControl/actionsRegistry.js
+  app/digitenant/utilitiesreadings/UtilitiesreadingsSchema.js
+  app/digitenant/expensescategories/logicControl/actionsRegistry.js
+  app/digitenant/expensescategories/ExpensescategoriesSchema.js
+  app/digitenant/maintenancevendors/logicControl/actionsRegistry.js
+  app/digitenant/maintenancevendors/MaintenancevendorsSchema.js
+  app/digitenant/maintenancerequests/logicControl/actionsRegistry.js
+  app/digitenant/maintenancerequests/MaintenancerequestsSchema.js
+  app/digitenant/propertieslandlords/logicControl/actionsRegistry.js
+  app/digitenant/propertieslandlords/PropertieslandlordsSchema.js

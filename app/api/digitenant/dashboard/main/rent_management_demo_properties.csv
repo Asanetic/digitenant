@@ -1,0 +1,6 @@
+properties_list_identifier,property_name,property_code,property_type,location,address,landlord_id,property_status
+PROP-0001,Greenview Apartments,GVA-001,Apartment,"Juja, Kiambu County","Along Juja Farm Road, Juja",LND-001,ACTIVE
+PROP-0002,Sunrise Court,SRC-002,Apartment,"Ruiru, Kiambu County","Near Ruiru Town, off Thika Road",LND-001,ACTIVE
+PROP-0003,Palm Ridge Villas,PRV-003,Townhouse,"Kilimani, Nairobi","Near Yaya Centre, Kilimani",LND-002,ACTIVE
+PROP-0004,Mwangaza Business Centre,MBC-004,Commercial,"Thika, Kiambu County","Kenyatta Highway, Thika",LND-002,ACTIVE
+PROP-0005,Oakwood Residential Court,ORC-005,Residential,"Kasarani, Nairobi","Seasons Road, Kasarani",LND-003,ACTIVE

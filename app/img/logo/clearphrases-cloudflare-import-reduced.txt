@@ -1,0 +1,92 @@
+; Cloudflare import for clearphrases.com
+; Reduced to fit the Free plan 200-record zone quota.
+; Preserves apex, website/app hosts, mail MX, SPF/DKIM, ACME,
+; autodiscover SRV, and distinct external service A records.
+; Omits generated per-subdomain cPanel convenience A records
+; and CalDAV/CardDAV SRV/TXT records; these can be re-added later if needed.
+; All records import as DNS-only; review proxy status after testing.
+$ORIGIN clearphrases.com.
+$TTL 7200
+
+@ 7200 IN A 77.95.113.16
+@ 7200 IN MX 0 clearphrases.com.
+mail 7200 IN CNAME clearphrases.com.
+www 7200 IN CNAME clearphrases.com.
+ftp 7200 IN A 77.95.113.16
+@ 7200 IN TXT "v=spf1 ip4:77.95.113.16 include:spf.mysecurecloudhost.com +a +mx ~all"
+default._domainkey 7200 IN TXT "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0CDHUkFQIKHQJQHjOVBj/QVapNWeL32LtxJXvvzQ6DGkOBuKRFGDDc+d7AIMT1lveEWM+6u7MMINUqo80wqwPMigcUe33/m7XEUGJUxUyEt959Caq1z3ReTjFUwpJ1IV7Tqw2q9Hut" "WZapctxIc2vBHi9N+rBxmfi0v9SGZDy/k2DdENA6wpD9HXytUqj24eCxxo6uSUwuvL9Gn+Rd6Qg2hfjrw5H5j14sJyLKNonPvIiG8ZP2/JKxy4BNAJDoyQfgDQT9gONZbo6mxxtzvAzWuLRGpQF7eNSFxbAYxV8MWW4jGwZZ4rf7gHq6WiUmsRDLWDr9Uw1rzEk6eZaF" "NuwQIDAQAB;"
+_cpanel-dcv-test-record 7200 IN TXT "_cpanel-dcv-test-record=Ys6Od1XWe7YkN_jsVBUnqIOL911401HEAhXbX361TEmPct8WotPJskDYunVpBWCH"
+alphatec 7200 IN A 77.95.113.16
+www.alphatec 7200 IN A 77.95.113.16
+default._domainkey.alphatec 7200 IN TXT "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtpvs/LTup/vGU/H8+QbI6+NGJm4vO0LoUDLM23ASqZ918a65h0TPVbuHWrHoIJImo7mWuVtz1T2CSmxiYzzdQd3BwbmOdTuIgy+/S9N87KJQBy2ddv7WHBPH5Uq1JgxkcU4a61JTUm" "62aNn21Qgtw9ncM81ruPMkACY7C7mhI30BKwZwf49U9VfjV+vS8c3dz7+NZyFgsbJhPGpsBB4bFddFkaMeuqVaXFFQJGskkennQbLYUSmmNa63i/KDfxihDj7cdzsLWaHXxGeYEZ1Hc/VjoiKK8cbDeZLSBoo6enMJ52FhsDumWaZ2s15E28+8zeQxSiBqmISbpAeucn" "y7kQIDAQAB;"
+alphatec 7200 IN TXT "v=spf1 ip4:77.95.113.16 include:spf.mysecurecloudhost.com +a +mx ~all"
+appstore 7200 IN A 77.95.113.16
+www.appstore 7200 IN A 77.95.113.16
+default._domainkey.appstore 7200 IN TXT "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2D6KH6njjvdpFFgwpLalPoapdIpdzXL2fI448/xawuULE/0OE9BlGMcrviTGTqrhQWH2TIp5mnZda4gZaCeuThWd1cgMr4477kIONSY/rk+hEp/TVo6vXUv8n+qjwma8twUsOel9HX" "J/0y0ACDbxulO3uzs97a5i4sEHKsHuaBYSttvhlcfUdbE7j04wEomF68xNRKehrr7RR30cR+Jbf0Z5un3Qiq6eIGBMsB3ml22kv2/jzr5XE4DFqFVBv1ZCHrmbgFkJbusDglJcWcEpaHCOI2/B3GK0S/P76G3xSsnTp3JmfBF9gjBhF+HHjlAS/bpZNzFPGf9U7z27je" "iSfQIDAQAB;"
+appstore 7200 IN TXT "v=spf1 ip4:77.95.113.16 include:spf.mysecurecloudhost.com +a +mx ~all"
+_acme-challenge 7200 IN TXT "zAkCRefQUOKfMg5DqbPpUtxaKmr8l2F7Ys2gZjNnjkk"
+_acme-challenge.www.alphatec 7200 IN TXT "XZkVI-0zh94pzcBbFAxJWkxKs4FYXo-UAFCajQ0tYdI"
+_acme-challenge.alphatec 7200 IN TXT "ogLsiUO01o2lL3WOy6XQR3bE2hgA_QHrqkkSAn4uk6M"
+_acme-challenge.www.appstore 7200 IN TXT "O8RW-h7Xw9NdYLQK1lTgSnWlgFTE_Syb4l-9sQfpa2A"
+_acme-challenge.appstore 7200 IN TXT "J-sqOvZbNU7cJA6sRLNPDMxJuPmGPp8PAbjjGc7OJwU"
+appview 7200 IN A 77.95.113.16
+www.appview 7200 IN A 77.95.113.16
+default._domainkey.appview 7200 IN TXT "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtJB472Cn/FXJ89K/vAhHxuY/iBylCteFe44zNQWDrIMNbFYsiTllYSE4BtAkjbO70Ku81eHNh/fxsaTjcBZ7J+Eos78pvvoFihgvlUjx50BXxRyVDj6q0VA+qFueRXcr8RyuaxoXw2" "1+tGz31W0021JQM9KQDNgwvFGBiZ1FXRi/BuLQfK2fOaNUBB4RNdVmMTlrH/aHxGtM7hPduGuzzx0Ll13IXjPxNwkbNeJfyopk2+Qx4ow72RGQmtd+c3x9CsUJkw7jxAB17B5NyqH1ufNqqI33QFFmgcLp7tbu0zbkB2p6hqV6b7ugfDmUhdJNEsJW+bBcch058emjWh" "L+2QIDAQAB;"
+appview 7200 IN TXT "v=spf1 ip4:77.95.113.16 include:spf.mysecurecloudhost.com +a +mx ~all"
+asanetic 7200 IN A 77.95.113.16
+www.asanetic 7200 IN A 77.95.113.16
+default._domainkey.asanetic 7200 IN TXT "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2oBjVuU6lbtwlT/uStEs7z7zwK0f9zVCaTJOm0LRI+7++ruX0WLxngXsM7WQBcR07hc3TKC4lVBFn85MVsLe+g5e/54Me94oSKKkO4ZUz1C79s2LT1P1D79VKhx9bfIdF/ObIUjfTV" "oaQfi9a7NYjlToGVH/e/UR2d4pFSVvuSOsKjNHXfapjGT8DNNYkN0THpzSyLsFQz0w1XiTwpDJQ2hTtypd5y01F+3dWlSJHpDwsFfhUSsEaWz80jNirKAyadBFpBtBSP9T6zHVUCxInDCN1tN0gAf/NBtvTvKwcF4EyqTGACo3covlXaDsUtd0muZ4HTKUGZGTiiPMFp" "Bj6wIDAQAB;"
+asanetic 7200 IN TXT "v=spf1 ip4:77.95.113.16 include:spf.mysecurecloudhost.com +a +mx ~all"
+digitenant 7200 IN A 77.95.113.16
+www.digitenant 7200 IN A 77.95.113.16
+default._domainkey.digitenant 7200 IN TXT "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0Li72v0iEEhP0MBaYSVpSKTgF6trrYc22cBeAlMayQ6Jn5y0B17QKfFou4uoThJGtM6Z++xCGPzrNFx7UGdcU1bRFXH0cSGf5I5mCoVLR4HBrAIFiUXqmEVO6mDqqYrIRG6hep9YCo" "LSq5bTi+1wJJehDLcOdCVM/U46g2kW47ysRovQqnEoaNTUd5mt27gLbhSugBWrhd65ETo6YtV6DpiQMQwja2bMeItId7Vum9hjgl6INVHyIscoSHTNv/WsZa3mCoV03c9U0UsjbiURauswMllIX354yjwYtbPxpGgS64uvyhfxk6hhYuSO8vQz7oWrliqdRMeZfteyP7" "MgawIDAQAB;"
+digitenant 7200 IN TXT "v=spf1 ip4:77.95.113.16 include:spf.mysecurecloudhost.com +a +mx ~all"
+origin 7200 IN A 77.95.113.16
+www.origin 7200 IN A 77.95.113.16
+default._domainkey.origin 7200 IN TXT "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAybvrfk3cT1v85z1Pik4TPhH+jRqcohYN0K6dysh442/iEI+zwgoO7pdct6LLGqZ3aqlA7T6cZqfvgxE2C7uOrapdge7Llxes//FohI/T//0dfkoxew8PzAl0KTmhJDel6YfSK183+T" "p1taQg3sMFnZYNFj4/xUraP8SCL4F3JmNBQLHHfUVrk3bnDGc+2fODdw62b+XVuWMAZ5NK75m0kUsXJUFUMO6WChwkafY/o4jNy0jZhi2xzjep7hDMCzXiyi6Tkuhc4dApylVVSN1LCt0gnRiWKfLtT3Csi8ZmYzCfKcurlWbpZjJdkeiCtU2FZHdI6QVCZa54A8KHy/" "qZLwIDAQAB;"
+origin 7200 IN TXT "v=spf1 ip4:77.95.113.16 include:spf.mysecurecloudhost.com +a +mx ~all"
+web 7200 IN A 77.95.113.16
+www.web 7200 IN A 77.95.113.16
+default._domainkey.web 7200 IN TXT "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAneK2gl1fj3zW3R0QI30uItQLmfGIdWVXWuu+aITq8mQJugAckFXYZyyuChYO/fcAy2v97XMQOw/WmmLdEmEcnpH0nJL9IdT0X+Yx2LtpUU67NBJVrDUaU5fydqAO3xzkQz40ywmgRv" "iI0WVOIOZ8+escBiA0SYEvE48NGBLW0BOEj6UtX6mZBJhT3rb8IZ081/yYChSLzQzWp45JSz6iAhlwftM40omwP8c+7ewoQS8x9ZsJYyupFmGn1kZ6QcFcr3Ps3dVeMeDe11PurepWxGSyea+Hpky06QbrqXEm7oLzlRYx8dUMiT1VdaSLDtBJ1DTvLNivweG3wTCbgk" "hHbwIDAQAB;"
+web 7200 IN TXT "v=spf1 ip4:77.95.113.16 include:spf.mysecurecloudhost.com +a +mx ~all"
+playstore 7200 IN A 77.95.113.16
+www.playstore 7200 IN A 77.95.113.16
+default._domainkey.playstore 7200 IN TXT "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr8vnYSZUHwHgughMp00JNsl7zLBdirgZPD7T6y0UOSrM0V2k2vo45EqYaxTJJAQoGR3lx4XWfu1QI8TgEuHFvJZ13AmJzKbGK+5V7YOAWBOrAzdjXIJmMRy01YqMtzL5j8v3SKw4te" "9oKlqoNjKPTCfHfcSkP87/MdL2thQdCLsWvIOwKrqroyIQ/2M4+cwKxLsSQ7SDmvBZKtKdoH7Bw6fuS0Y1Cp2G+zHosCZW99uVT1hhmSfTH2CXfGzgzEX/efgYIovwUb8thg6tlrgT+eQfUhGNwYhrUXZHSQrHb14u6Sht4385GEQtyB9n9J25bMoGgNkBWwMveSATA3" "wr+QIDAQAB;"
+playstore 7200 IN TXT "v=spf1 ip4:77.95.113.16 include:spf.mysecurecloudhost.com +a +mx ~all"
+shell 14400 IN A 91.215.85.228
+estate 7200 IN A 77.95.113.16
+www.estate 7200 IN A 77.95.113.16
+default._domainkey.estate 7200 IN TXT "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnFXkREVQEK4TFVTVxk1UN/MCHCkio/gohNFW19B15RI5ilx2f4kFSLjR7yhXoCeKegz7rSfIzHgV6PkNum8VnO1vEZFlwjDhJYcTERHjpcSed1ixmdtXZ70VZmPkCxxy81brIekk6c" "A9qUeHqgbW82ErOZXwd/m8PgLfyMDHlFpQ8iD2RGRNv86XpAX52QaUTiZtzU6RGfgvZq7dQNSoMNaEjYdQXX030u2Tt7dzVcvoUx/uk1UtLMzwETsTk+1QxIgeWU5FCMBWAmHyeL6KfIWRhLbSCFJ/FHoPDmAto/9qmZVNall1hJjmY0NnlV4WYbLelPJH67X/1myek0" "kB9QIDAQAB;"
+estate 7200 IN TXT "v=spf1 ip4:77.95.113.16 include:spf.mysecurecloudhost.com +a +mx ~all"
+hive 7200 IN A 77.95.113.16
+www.hive 7200 IN A 77.95.113.16
+default._domainkey.hive 7200 IN TXT "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5RDtRUoQXRSKYpU68YEjCdRiH2taDDl7OCQuzIQ+z+8Ab69eFLMKusaMIlDIgotx2jyVKRrJZF1Iscxr/aEZmkR/6Ie2UX0awjUlSlfGSHhXg8e21wtb+ZqCDpm89469d5YO7RWlyC" "srynKnTiKO8B4nTjpffoLL4NiZ124ecLywZj5oNSjgvrGt+OlKYtQ/3PjBTywYSSsPX9a5pbflqS0lQY/ecjX2RQST2EcXwLyneBGaUxtXwj2O5UfORmhGjwAc4yRxhyW7JDszZiLvuYEGLPpxIO4zfUZef7yLU1ENgB0LIm3AaNYkbDgGVG8mLLSah9Isz7VxScVxYr" "vJGwIDAQAB;"
+hive 7200 IN TXT "v=spf1 ip4:77.95.113.16 include:spf.mysecurecloudhost.com +a +mx ~all"
+pos 7200 IN A 77.95.113.16
+www.pos 7200 IN A 77.95.113.16
+default._domainkey.pos 7200 IN TXT "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzpk6wkWSvfcaepf9dn3SiapsRzZhHgJAWCPMhKNm5IupSARypmkV9xANwL+pZ4quR6Rl3+970oXkcSK790jGzfN5cP0zCIkJpBct/O2PrEoA22wGg4krgs+bUIqAfCQ0/YRJXDtzVZ" "9PlA6a++XRgRafLlqCR9i5KSWS/Vc+qA7M5jHZMCBNlIs0W2JN0TyuVMM3wJXHA8uY4a1YZdwhnYmNhSWzsoMhv/jcgQpKgDpg5f+mLsYLtm7cIp8KOP/rjBdP/khs4dHVkLs0zSRAGvJ2o7ODnhk0ima4PIrmu+Fs+PSsviXTrOlAKoAMe6l65QKZ2J8BBL90fAB2Gx" "HRGwIDAQAB;"
+pos 7200 IN TXT "v=spf1 ip4:77.95.113.16 include:spf.mysecurecloudhost.com +a +mx ~all"
+_acme-challenge.pos 7200 IN TXT "JCElX8ShZ6UdPHVK7cFkomlOpvKh6d6pANLkIbWuy4I"
+_acme-challenge.www.pos 7200 IN TXT "rjj3NpzxGrDIirM5Y5MSrU7wQxDRNMKK8qIIN4eNiro"
+ssss 14400 IN A 91.215.85.245
+abcd 14400 IN A 91.215.85.245
+abcde 14400 IN A 91.215.85.245
+ccobba 14400 IN A 91.92.242.88
+atnews 14400 IN A 91.215.85.245
+roth 14400 IN A 91.215.85.245
+direkt 14400 IN A 91.92.250.55
+_acme-challenge.www.web 7200 IN TXT "e_nak1_R2Sx1RYZnfeqa-36N24p2UaFjLUsQrbGM1rg"
+_acme-challenge.web 7200 IN TXT "57B3HRpfKPd_yj2sx7Wu0iPxzTOgAZbOgAvyG68mCTM"
+_acme-challenge.www.digitenant 7200 IN TXT "bk6r8Si8_wIuDKcEFUa229F-8OTBovQ4iXWSjFWD2U0"
+_autodiscover._tcp.digitenant 7200 IN SRV 0 0 443 cpanelemaildiscovery.cpanel.net.
+_autodiscover._tcp 7200 IN SRV 0 0 443 cpanelemaildiscovery.cpanel.net.
+_autodiscover._tcp.appstore 7200 IN SRV 0 0 443 cpanelemaildiscovery.cpanel.net.
+_autodiscover._tcp.origin 7200 IN SRV 0 0 443 cpanelemaildiscovery.cpanel.net.
+_autodiscover._tcp.estate 7200 IN SRV 0 0 443 cpanelemaildiscovery.cpanel.net.
+_autodiscover._tcp.pos 7200 IN SRV 0 0 443 cpanelemaildiscovery.cpanel.net.
+_autodiscover._tcp.asanetic 7200 IN SRV 0 0 443 cpanelemaildiscovery.cpanel.net.
+_autodiscover._tcp.web 7200 IN SRV 0 0 443 cpanelemaildiscovery.cpanel.net.
+_autodiscover._tcp.hive 7200 IN SRV 0 0 443 cpanelemaildiscovery.cpanel.net.
+_autodiscover._tcp.playstore 7200 IN SRV 0 0 443 cpanelemaildiscovery.cpanel.net.
+_autodiscover._tcp.appview 7200 IN SRV 0 0 443 cpanelemaildiscovery.cpanel.net.
+_autodiscover._tcp.alphatec 7200 IN SRV 0 0 443 cpanelemaildiscovery.cpanel.net.

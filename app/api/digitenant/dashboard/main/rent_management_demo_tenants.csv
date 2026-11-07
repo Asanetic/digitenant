@@ -1,0 +1,26 @@
+tenants_list_identifier,tenant_name,phone_number,email,national_id,tenant_status,remark,reg_date
+TNT-0001,Brian Kamau,0712345601,brian.kamau@example.com,29845176,ACTIVE,Resident at Greenview Apartments,2026-01-12
+TNT-0002,Mercy Njeri,0722345602,mercy.njeri@example.com,31258764,ACTIVE,Resident at Greenview Apartments,2026-02-03
+TNT-0003,Kevin Otieno,0703345603,kevin.otieno@example.com,28461395,ACTIVE,Resident at Greenview Apartments,2026-03-18
+TNT-0004,Faith Wambui,0799345604,faith.wambui@example.com,32674185,ACTIVE,Resident at Greenview Apartments,2026-04-06
+TNT-0005,Samuel Kiptoo,0718345605,samuel.kiptoo@example.com,30195842,ACTIVE,Resident at Sunrise Court,2026-01-20
+TNT-0006,Lydia Achieng,0728345606,lydia.achieng@example.com,29517483,ACTIVE,Resident at Sunrise Court,2026-02-14
+TNT-0007,Dennis Mutua,0708345607,dennis.mutua@example.com,31846275,ACTIVE,Resident at Sunrise Court,2026-03-02
+TNT-0008,Sharon Chebet,0798345608,sharon.chebet@example.com,28751946,ACTIVE,Resident at Sunrise Court,2026-04-21
+TNT-0009,George Maina,0717345609,george.maina@example.com,33418652,ACTIVE,Resident at Palm Ridge Villas,2026-01-08
+TNT-0010,Esther Wairimu,0727345610,esther.wairimu@example.com,27649518,ACTIVE,Resident at Palm Ridge Villas,2026-02-25
+TNT-0011,Collins Barasa,0707345611,collins.barasa@example.com,30957284,ACTIVE,Resident at Palm Ridge Villas,2026-03-11
+TNT-0012,Diana Muthoni,0797345612,diana.muthoni@example.com,32168457,ACTIVE,Resident at Palm Ridge Villas,2026-05-01
+TNT-0013,Patrick Mwangi,0716345613,patrick.mwangi@example.com,29385716,ACTIVE,Resident at Mwangaza Business Centre,2026-01-15
+TNT-0014,Alice Atieno,0726345614,alice.atieno@example.com,31572948,ACTIVE,Resident at Mwangaza Business Centre,2026-02-09
+TNT-0015,Joseph Karanja,0706345615,joseph.karanja@example.com,28194637,ACTIVE,Resident at Mwangaza Business Centre,2026-03-27
+TNT-0016,Ruth Nyambura,0796345616,ruth.nyambura@example.com,33751829,ACTIVE,Resident at Mwangaza Business Centre,2026-04-12
+TNT-0017,Michael Ochieng,0715345617,michael.ochieng@example.com,30482619,ACTIVE,Resident at Oakwood Residential Court,2026-01-29
+TNT-0018,Janet Wanjiku,0725345618,janet.wanjiku@example.com,28947361,ACTIVE,Resident at Oakwood Residential Court,2026-02-18
+TNT-0019,Eric Kipchoge,0705345619,eric.kipchoge@example.com,31958427,ACTIVE,Resident at Oakwood Residential Court,2026-03-22
+TNT-0020,Beatrice Naliaka,0795345620,beatrice.naliaka@example.com,29731684,ACTIVE,Resident at Oakwood Residential Court,2026-05-09
+TNT-0021,Daniel Mbugua,0714345621,daniel.mbugua@example.com,27385196,MOVED_OUT,Former resident at Greenview Apartments; vacated 2026-08-31,2025-08-01
+TNT-0022,Cynthia Adhiambo,0724345622,cynthia.adhiambo@example.com,32594718,MOVED_OUT,Former resident at Sunrise Court; vacated 2026-09-15,2025-11-12
+TNT-0023,Robert Kibet,0704345623,robert.kibet@example.com,28631579,MOVED_OUT,Former resident at Palm Ridge Villas; vacated 2026-07-31,2025-06-10
+TNT-0024,Pauline Wambua,0794345624,pauline.wambua@example.com,31162845,MOVED_OUT,Former resident at Mwangaza Business Centre; vacated 2026-10-01,2025-09-20
+TNT-0025,Anthony Githinji,0713345625,anthony.githinji@example.com,30279461,MOVED_OUT,Former resident at Oakwood Residential Court; vacated 2026-06-30,2025-04-05

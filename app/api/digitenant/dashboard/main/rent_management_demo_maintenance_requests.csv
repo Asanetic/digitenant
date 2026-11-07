@@ -1,0 +1,21 @@
+maintenance_requests_identifier,request_date,unit_id,tenant_id,vendor_id,category,priority,description
+MNT-2026-0001,2026-05-12,SRC-U004,TNT-0007,,PLUMBING,HIGH,Kitchen sink pipe leaking and causing water to collect under the cabinet
+MNT-2026-0002,2026-05-20,MBC-U002,TNT-0014,,ELECTRICAL,URGENT,Power socket sparking intermittently in the living room; requires electrician inspection
+MNT-2026-0003,2026-05-28,GVA-U001,TNT-0001,,PLUMBING,MEDIUM,Bathroom shower has low water pressure and needs inspection
+MNT-2026-0004,2026-06-05,SRC-U005,TNT-0008,,PAINTING,LOW,Touch up peeling paint on the bedroom wall
+MNT-2026-0005,2026-06-13,MBC-U004,TNT-0015,,DOORS_LOCKS,HIGH,Main entrance door lock is jammed and difficult to secure
+MNT-2026-0006,2026-06-21,GVA-U002,TNT-0002,,ROOFING,HIGH,Water seepage reported on the ceiling after heavy rain
+MNT-2026-0007,2026-06-29,PRV-U001,TNT-0009,,ELECTRICAL,MEDIUM,Replace faulty corridor light fitting
+MNT-2026-0008,2026-07-07,MBC-U005,TNT-0016,,DRAINAGE,HIGH,Balcony drain is blocked and water is not clearing
+MNT-2026-0009,2026-07-15,GVA-U004,TNT-0003,,APPLIANCE,MEDIUM,Kitchen extractor fan has stopped working
+MNT-2026-0010,2026-07-23,PRV-U002,TNT-0010,,PLUMBING,URGENT,Toilet cistern continuously running and wasting water
+MNT-2026-0011,2026-07-31,ORC-U001,TNT-0017,,PEST_CONTROL,MEDIUM,Request inspection and treatment for ants in the kitchen
+MNT-2026-0012,2026-08-08,GVA-U005,TNT-0004,,WINDOWS,LOW,Bedroom window handle is loose and needs tightening
+MNT-2026-0013,2026-08-16,PRV-U004,TNT-0011,,GENERAL_REPAIR,MEDIUM,Repair loose kitchen cabinet hinge
+MNT-2026-0014,2026-08-24,ORC-U003,TNT-0018,,WATER_SYSTEM,HIGH,Water tank float valve appears faulty; supply is overflowing
+MNT-2026-0015,2026-09-01,SRC-U001,TNT-0005,,SECURITY,HIGH,Replace damaged external security light near entrance
+MNT-2026-0016,2026-09-09,PRV-U005,TNT-0012,,FLOORING,LOW,Repair cracked floor tile near the bathroom doorway
+MNT-2026-0017,2026-09-17,ORC-U004,TNT-0019,,GARBAGE_AREA,MEDIUM,Repair damaged refuse-bin enclosure gate
+MNT-2026-0018,2026-09-25,SRC-U002,TNT-0006,,COMMON_AREA,MEDIUM,Staircase handrail is loose and needs fastening
+MNT-2026-0019,2026-10-03,MBC-U001,TNT-0013,,ELECTRICAL,HIGH,Frequent tripping of the unit circuit breaker; inspect wiring
+MNT-2026-0020,2026-10-11,ORC-U005,TNT-0020,,PLUMBING,MEDIUM,Repair dripping tap in the bathroom

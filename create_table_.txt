@@ -1,0 +1,362 @@
+//dna options== Digital Nexus Architecture (DNA)
+$dna_file_name = "db_creation_Script";
+$create_dna = "yes"; //yes | no
+$overwrite_dna_file = "yes"; //yes | no
+//dna options==
+
+
+//=========================================================
+// PROPERTIES LANDLORDS TABLE
+//=========================================================
+
+$properties_landlords_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`landlord_id` varchar(100) NOT NULL,
+`landlord_name` varchar(255) NOT NULL,
+`phone_number` varchar(50),
+`email` varchar(255),
+`payout_account` varchar(255),
+`commission_percent` decimal(5,2) DEFAULT 0.00,
+`landlord_status` varchar(50) DEFAULT 'active',
+`remark` text,
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$properties_landlords_table = 'properties_landlords';
+
+create_table($mysqliconn, $dbname, $properties_landlords_table, $properties_landlords_table_script);
+
+
+//=========================================================
+// PROPERTIES LIST TABLE
+//=========================================================
+
+$properties_list_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`property_id` varchar(100) NOT NULL,
+`property_name` varchar(255) NOT NULL,
+`property_code` varchar(100),
+`property_type` varchar(50) DEFAULT 'residential',
+`location` varchar(255),
+`address` text,
+`landlord_id` varchar(100),
+`property_status` varchar(50) DEFAULT 'active',
+`remark` text,
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$properties_list_table = 'properties_list';
+
+create_table($mysqliconn, $dbname, $properties_list_table, $properties_list_table_script);
+
+
+//=========================================================
+// PROPERTIES UNITS TABLE
+//=========================================================
+
+$properties_units_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`unit_id` varchar(100) NOT NULL,
+`unit_name` varchar(255) NOT NULL,
+`unit_code` varchar(100),
+`unit_type` varchar(50) DEFAULT 'apartment',
+`property_id` varchar(100) NOT NULL,
+`rent_amount` decimal(12,2) DEFAULT 0.00,
+`deposit_amount` decimal(12,2) DEFAULT 0.00,
+`unit_status` varchar(50) DEFAULT 'vacant',
+`remark` text,
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$properties_units_table = 'properties_units';
+
+create_table($mysqliconn, $dbname, $properties_units_table, $properties_units_table_script);
+
+
+//=========================================================
+// PROPERTIES PAYOUTS TABLE
+// REMITTANCE TO LANDLORDS
+//=========================================================
+
+$properties_payouts_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`payout_id` varchar(100) NOT NULL,
+`landlord_id` varchar(100) NOT NULL,
+`property_id` varchar(100),
+`period_start` date,
+`period_end` date,
+`collected_amount` decimal(12,2) DEFAULT 0.00,
+`expenses_amount` decimal(12,2) DEFAULT 0.00,
+`commission_amount` decimal(12,2) DEFAULT 0.00,
+`net_amount` decimal(12,2) DEFAULT 0.00,
+`payout_date` datetime,
+`ref_no` varchar(255),
+`payout_status` varchar(50) DEFAULT 'pending',
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$properties_payouts_table = 'properties_payouts';
+
+create_table($mysqliconn, $dbname, $properties_payouts_table, $properties_payouts_table_script);
+
+
+//=========================================================
+// TENANTS LIST TABLE
+//=========================================================
+
+$tenants_list_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`tenant_id` varchar(100) NOT NULL,
+`tenant_name` varchar(255) NOT NULL,
+`phone_number` varchar(50),
+`email` varchar(255),
+`national_id` varchar(100),
+`tenant_status` varchar(50) DEFAULT 'active',
+`remark` text,
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$tenants_list_table = 'tenants_list';
+
+create_table($mysqliconn, $dbname, $tenants_list_table, $tenants_list_table_script);
+
+
+//=========================================================
+// TENANTS LEASES TABLE
+//=========================================================
+
+$tenants_leases_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`lease_id` varchar(100) NOT NULL,
+`tenant_id` varchar(100) NOT NULL,
+`unit_id` varchar(100) NOT NULL,
+`start_date` date,
+`end_date` date,
+`rent_amount` decimal(12,2) DEFAULT 0.00,
+`deposit_amount` decimal(12,2) DEFAULT 0.00,
+`lease_status` varchar(50) DEFAULT 'active',
+`lease_file` varchar(255),
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$tenants_leases_table = 'tenants_leases';
+
+create_table($mysqliconn, $dbname, $tenants_leases_table, $tenants_leases_table_script);
+
+
+//=========================================================
+// RENT INVOICES TABLE
+//=========================================================
+
+$rent_invoices_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`invoice_id` varchar(100) NOT NULL,
+`lease_id` varchar(100) NOT NULL,
+`tenant_id` varchar(100) NOT NULL,
+`invoice_date` date,
+`due_date` date,
+`billing_period` varchar(50),
+`total_amount` decimal(12,2) DEFAULT 0.00,
+`paid_amount` decimal(12,2) DEFAULT 0.00,
+`balance_amount` decimal(12,2) DEFAULT 0.00,
+`invoice_status` varchar(50) DEFAULT 'unpaid',
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$rent_invoices_table = 'rent_invoices';
+
+create_table($mysqliconn, $dbname, $rent_invoices_table, $rent_invoices_table_script);
+
+
+//=========================================================
+// RENT ITEMS TABLE
+// INVOICE LINES: RENT | WATER | SERVICE | PENALTY
+//=========================================================
+
+$rent_items_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`item_id` varchar(100) NOT NULL,
+`invoice_id` varchar(100) NOT NULL,
+`item_type` varchar(50) DEFAULT 'rent',
+`description` varchar(255),
+`amount` decimal(12,2) NOT NULL DEFAULT 0.00,
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$rent_items_table = 'rent_items';
+
+create_table($mysqliconn, $dbname, $rent_items_table, $rent_items_table_script);
+
+
+//=========================================================
+// RENT PAYMENTS TABLE
+//=========================================================
+
+$rent_payments_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`payment_id` varchar(100) NOT NULL,
+`payment_date` datetime DEFAULT CURRENT_TIMESTAMP,
+`amount` decimal(12,2) NOT NULL DEFAULT 0.00,
+`payment_method` varchar(50) DEFAULT 'mpesa',
+`ref_no` varchar(255),
+`invoice_id` varchar(100) NOT NULL,
+`tenant_id` varchar(100) NOT NULL,
+`payment_status` varchar(50) DEFAULT 'confirmed',
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$rent_payments_table = 'rent_payments';
+
+create_table($mysqliconn, $dbname, $rent_payments_table, $rent_payments_table_script);
+
+
+//=========================================================
+// MAINTENANCE VENDORS TABLE
+//=========================================================
+
+$maintenance_vendors_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`vendor_id` varchar(100) NOT NULL,
+`vendor_name` varchar(255) NOT NULL,
+`phone_number` varchar(50),
+`specialty_type` varchar(100),
+`vendor_status` varchar(50) DEFAULT 'active',
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$maintenance_vendors_table = 'maintenance_vendors';
+
+create_table($mysqliconn, $dbname, $maintenance_vendors_table, $maintenance_vendors_table_script);
+
+
+//=========================================================
+// MAINTENANCE REQUESTS TABLE
+//=========================================================
+
+$maintenance_requests_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`request_id` varchar(100) NOT NULL,
+`request_date` datetime DEFAULT CURRENT_TIMESTAMP,
+`unit_id` varchar(100) NOT NULL,
+`tenant_id` varchar(100),
+`vendor_id` varchar(100),
+`category` varchar(100),
+`priority` varchar(50) DEFAULT 'normal',
+`description` text,
+`cost_amount` decimal(12,2) DEFAULT 0.00,
+`request_status` varchar(50) DEFAULT 'open',
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$maintenance_requests_table = 'maintenance_requests';
+
+create_table($mysqliconn, $dbname, $maintenance_requests_table, $maintenance_requests_table_script);
+
+
+//=========================================================
+// UTILITIES METERS TABLE
+//=========================================================
+
+$utilities_meters_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`meter_id` varchar(100) NOT NULL,
+`meter_number` varchar(100) NOT NULL,
+`utility_type` varchar(50) DEFAULT 'water',
+`unit_id` varchar(100) NOT NULL,
+`meter_status` varchar(50) DEFAULT 'active',
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$utilities_meters_table = 'utilities_meters';
+
+create_table($mysqliconn, $dbname, $utilities_meters_table, $utilities_meters_table_script);
+
+
+//=========================================================
+// UTILITIES READINGS TABLE
+//=========================================================
+
+$utilities_readings_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`reading_id` varchar(100) NOT NULL,
+`reading_date` date,
+`meter_id` varchar(100) NOT NULL,
+`previous_reading` decimal(12,2) DEFAULT 0.00,
+`current_reading` decimal(12,2) DEFAULT 0.00,
+`rate_amount` decimal(12,2) DEFAULT 0.00,
+`total_amount` decimal(12,2) DEFAULT 0.00,
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$utilities_readings_table = 'utilities_readings';
+
+create_table($mysqliconn, $dbname, $utilities_readings_table, $utilities_readings_table_script);
+
+
+//=========================================================
+// EXPENSES CATEGORIES TABLE
+//=========================================================
+
+$expenses_categories_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`category_id` varchar(100) NOT NULL,
+`category_name` varchar(255) NOT NULL,
+`category_type` varchar(50) DEFAULT 'operating',
+`remark` text,
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$expenses_categories_table = 'expenses_categories';
+
+create_table($mysqliconn, $dbname, $expenses_categories_table, $expenses_categories_table_script);
+
+
+//=========================================================
+// EXPENSES LIST TABLE
+//=========================================================
+
+$expenses_list_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`expense_id` varchar(100) NOT NULL,
+`expense_date` datetime DEFAULT CURRENT_TIMESTAMP,
+`amount` decimal(12,2) NOT NULL DEFAULT 0.00,
+`category_id` varchar(100),
+`ref_no` varchar(255),
+`property_id` varchar(100),
+`remark` text,
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$expenses_list_table = 'expenses_list';
+
+create_table($mysqliconn, $dbname, $expenses_list_table, $expenses_list_table_script);

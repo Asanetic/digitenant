@@ -1,0 +1,26 @@
+report Properties "Arrears by Property"
+  by dimension
+  date due_date
+  entity rental_arrears_properties
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group property_id
+  rows "Property"
+  labels properties_list.property_id > property_name
+  sort overdue_amount desc
+
+  open_invoices = count rent_invoices where invoice_status!=paid "Open Invoices"
+  billed = sum rent_invoices.total_amount "Billed" money
+  unpaid = sum rent_invoices.balance_amount where invoice_status!=paid "Unpaid Balance" money
+  late = count rent_invoices where invoice_status=overdue "Overdue Invoices"
+  overdue_amount = sum rent_invoices.balance_amount where invoice_status=overdue "Overdue Amount" money
+  arrears_rate = round(overdue_amount / billed * 100) "Arrears %"
+  share = share(overdue_amount) "Share of Arrears"
+
+  headline {label} has the most arrears: {overdue_amount} overdue across {late} invoices, {arrears_rate}% of what was billed.
+  remark arrears_rate !== null && arrears_rate >= 30 | bad | Heavy arrears | {label}: {overdue_amount} overdue, {arrears_rate}% of the {billed} billed.
+  remark late > 0 | watch | Overdue | {label} has {late} overdue invoices worth {overdue_amount}.
+  remark true | good | Up to date | {label} has nothing overdue in this period.

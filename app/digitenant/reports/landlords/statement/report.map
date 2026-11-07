@@ -1,0 +1,27 @@
+report Statement "Landlord Statement"
+  by dimension
+  date period_end
+  entity rental_landlords_statement
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group landlord_id
+  rows "Landlord"
+  labels properties_landlords.landlord_id > landlord_name
+  sort net desc
+
+  # assumes payout_status=paid once the landlord has been remitted
+  statements = count properties_payouts "Statements"
+  collected = sum properties_payouts.collected_amount "Rent Collected" money
+  expenses = sum properties_payouts.expenses_amount "Expenses" money
+  commission = sum properties_payouts.commission_amount "Commission" money
+  net = sum properties_payouts.net_amount "Net Payable" money
+  paid_out = sum properties_payouts.net_amount where payout_status=paid "Paid Out" money
+  owed = sum properties_payouts.net_amount where payout_status!=paid "Still Owed" money
+  share = share(net) "Share of Payouts"
+
+  headline {label} has the largest payout: {net} net from {collected} collected, {owed} still owed.
+  remark owed > 0 | watch | Payout due | {label}: {owed} still to be paid out of {net} net.
+  remark true | good | Settled | {label}: {net} net paid out after {commission} commission and {expenses} expenses.

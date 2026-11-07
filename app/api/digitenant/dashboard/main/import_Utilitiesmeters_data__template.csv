@@ -1,0 +1,2 @@
+utilities_meters_identifier,meter_number,utility_type,unit_id,meter_status,reg_date
+"#NOTE: utilities_meters_identifier = a unique value to identify this record and its related data in the system, e.g. account_number or registration number. Leave blank to auto-generate. Delete this row before uploading.",,,,,

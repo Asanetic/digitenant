@@ -1,0 +1,2 @@
+tenants_leases_identifier,tenant_id,unit_id,start_date,end_date,rent_amount,deposit_amount,lease_status
+"#NOTE: tenants_leases_identifier = a unique value to identify this record and its related data in the system, e.g. account_number or registration number. Leave blank to auto-generate. Delete this row before uploading.",,,,,,,

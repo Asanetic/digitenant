@@ -1,0 +1,2 @@
+properties_units_identifier,unit_name,unit_code,unit_type,property_id,rent_amount,deposit_amount,unit_status
+"#NOTE: properties_units_identifier = a unique value to identify this record and its related data in the system, e.g. account_number or registration number. Leave blank to auto-generate. Delete this row before uploading.",,,,,,,

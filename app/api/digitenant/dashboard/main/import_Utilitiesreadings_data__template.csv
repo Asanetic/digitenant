@@ -1,0 +1,2 @@
+utilities_readings_identifier,reading_date,meter_id,previous_reading,current_reading,rate_amount,total_amount,reg_date
+"#NOTE: utilities_readings_identifier = a unique value to identify this record and its related data in the system, e.g. account_number or registration number. Leave blank to auto-generate. Delete this row before uploading.",,,,,,,
