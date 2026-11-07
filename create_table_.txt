@@ -165,6 +165,9 @@ $rent_invoices_table_script = "
 `invoice_id` varchar(100) NOT NULL,
 `lease_id` varchar(100) NOT NULL,
 `tenant_id` varchar(100) NOT NULL,
+`unit_id` varchar(100),
+`property_id` varchar(100),
+`landlord_id` varchar(100),
 `invoice_date` date,
 `due_date` date,
 `billing_period` varchar(50),
@@ -217,7 +220,8 @@ $rent_payments_table_script = "
 `ref_no` varchar(255),
 `invoice_id` varchar(100) NOT NULL,
 `tenant_id` varchar(100) NOT NULL,
-`payment_status` varchar(50) DEFAULT 'confirmed',
+`property_id` varchar(100),
+`payment_status` varchar(50) DEFAULT 'COMPLETED',
 `hive_site_id` varchar(100),
 `hive_site_name` varchar(255),
 `reg_date` datetime DEFAULT CURRENT_TIMESTAMP
@@ -360,3 +364,80 @@ $expenses_list_table_script = "
 $expenses_list_table = 'expenses_list';
 
 create_table($mysqliconn, $dbname, $expenses_list_table, $expenses_list_table_script);
+
+
+//=========================================================
+// MESSAGES TEMPLATES TABLE
+// SMS WORDING: REMINDER | RECEIPT | NOTICE | STATEMENT
+//=========================================================
+
+$messages_templates_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`template_id` varchar(100) NOT NULL,
+`template_name` varchar(255) NOT NULL,
+`template_type` varchar(50) DEFAULT 'reminder',
+`channel` varchar(50) DEFAULT 'sms',
+`message_body` text NOT NULL,
+`template_status` varchar(50) DEFAULT 'active',
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$messages_templates_table = 'messages_templates';
+
+create_table($mysqliconn, $dbname, $messages_templates_table, $messages_templates_table_script);
+
+
+//=========================================================
+// MESSAGES REMINDERS TABLE
+// WHEN TO SEND: BEFORE DUE | ON DUE | AFTER DUE | LEASE EXPIRY
+//=========================================================
+
+$messages_reminders_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`reminder_id` varchar(100) NOT NULL,
+`reminder_name` varchar(255) NOT NULL,
+`trigger_type` varchar(50) DEFAULT 'before_due',
+`days_offset` int(11) DEFAULT 3,
+`repeat_days` int(11) DEFAULT 0,
+`template_id` varchar(100) NOT NULL,
+`reminder_status` varchar(50) DEFAULT 'active',
+`remark` text,
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$messages_reminders_table = 'messages_reminders';
+
+create_table($mysqliconn, $dbname, $messages_reminders_table, $messages_reminders_table_script);
+
+
+//=========================================================
+// MESSAGES LOG TABLE
+// EVERY SMS SENT: WHO | WHAT | WHEN | DELIVERED
+//=========================================================
+
+$messages_log_table_script = "
+`primkey` int(11) PRIMARY KEY AUTO_INCREMENT,
+`message_id` varchar(100) NOT NULL,
+`send_date` datetime DEFAULT CURRENT_TIMESTAMP,
+`tenant_id` varchar(100),
+`invoice_id` varchar(100),
+`template_id` varchar(100),
+`reminder_id` varchar(100),
+`phone_number` varchar(50) NOT NULL,
+`message_body` text,
+`message_status` varchar(50) DEFAULT 'queued',
+`provider_ref` varchar(255),
+`cost_amount` decimal(12,2) DEFAULT 0.00,
+`error_message` varchar(255),
+`hive_site_id` varchar(100),
+`hive_site_name` varchar(255),
+`reg_date` datetime DEFAULT CURRENT_TIMESTAMP
+";
+
+$messages_log_table = 'messages_log';
+
+create_table($mysqliconn, $dbname, $messages_log_table, $messages_log_table_script);

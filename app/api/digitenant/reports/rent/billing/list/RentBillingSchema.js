@@ -13,11 +13,10 @@ export const RentBillingSchema = {
     { key: 'invoices', table: 'rent_invoices', agg: 'count', by: 'invoice_date' },
     { key: 'billed', table: 'rent_invoices', agg: 'sum', col: 'total_amount', by: 'invoice_date' },
     { key: 'collected', table: 'rent_invoices', agg: 'sum', col: 'paid_amount', by: 'invoice_date' },
-    { key: 'outstanding', table: 'rent_invoices', agg: 'sum', col: 'balance_amount', by: 'invoice_date' },
   ],
 
   filters: [
-    { param: 'status', cols: { invoices: 'invoice_status', billed: 'invoice_status', collected: 'invoice_status', outstanding: 'invoice_status' } },
-    { param: 'property', cols: { invoices: 'property_id', billed: 'property_id', collected: 'property_id', outstanding: 'property_id' } },
+    { param: 'status', cols: { invoices: 'invoice_status', billed: 'invoice_status', collected: 'invoice_status' } },
+    { param: 'property', cols: { invoices: 'property_id', billed: 'property_id', collected: 'property_id' } },
   ],
 };

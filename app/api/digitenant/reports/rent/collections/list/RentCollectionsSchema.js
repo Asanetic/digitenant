@@ -10,8 +10,8 @@ export const RentCollectionsSchema = {
   maxRangeDays: 1200,
 
   measures: [
-    { key: 'payments', table: 'rent_payments', agg: 'count', by: 'payment_date', where: [{ col: 'payment_status', op: '=', val: 'confirmed' }] },
-    { key: 'collected', table: 'rent_payments', agg: 'sum', col: 'amount', by: 'payment_date', where: [{ col: 'payment_status', op: '=', val: 'confirmed' }] },
+    { key: 'payments', table: 'rent_payments', agg: 'count', by: 'payment_date', where: [{ col: 'payment_status', op: '=', val: 'COMPLETED' }] },
+    { key: 'collected', table: 'rent_payments', agg: 'sum', col: 'amount', by: 'payment_date', where: [{ col: 'payment_status', op: '=', val: 'COMPLETED' }] },
   ],
 
   filters: [

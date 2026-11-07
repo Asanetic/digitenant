@@ -1,0 +1,17 @@
+report Expiries "Lease Expiries"
+  by month|year
+  date end_date
+  entity rental_tenants_expiries
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  # pick a future range to see which leases are coming up for renewal
+  leases = count tenants_leases where lease_status=ACTIVE "Leases Ending"
+  rent_at_risk = sum tenants_leases.rent_amount where lease_status=ACTIVE "Monthly Rent Ending" money
+  deposits = sum tenants_leases.deposit_amount where lease_status=ACTIVE "Deposits Held" money
+
+  headline {label}: {leases} leases end, {rent_at_risk} monthly rent up for renewal.
+  remark leases == 0 | neutral | None ending | No active leases end in {label}.
+  remark true | watch | Renewals due | {leases} leases end in {label}, carrying {rent_at_risk} a month.

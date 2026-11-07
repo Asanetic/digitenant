@@ -1,0 +1,23 @@
+report Categories "Maintenance by Category"
+  by dimension
+  date request_date
+  entity rental_maintenance_categories
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group category
+  rows "Category"
+  sort requests desc
+
+  requests = count maintenance_requests "Requests"
+  urgent = count maintenance_requests where priority=URGENT "Urgent"
+  high = count maintenance_requests where priority=HIGH "High"
+  cost = sum maintenance_requests.cost_amount "Cost" money
+  share = share(requests) "Share of Requests"
+
+  headline {label} has the most requests: {requests}, {urgent} urgent and {high} high priority.
+  remark urgent > 0 | bad | Urgent work | {label} has {urgent} urgent requests.
+  remark high > 0 | watch | High priority | {label} has {high} high priority requests.
+  remark true | neutral | Maintenance | {label}: {requests} requests, {share}% of all.

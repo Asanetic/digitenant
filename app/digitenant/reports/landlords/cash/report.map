@@ -1,0 +1,22 @@
+report Cash "Property Cash Statement"
+  by month|year
+  date payment_date
+  entity rental_landlords_cash
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  filter property = property_id
+
+  # Actual money only, by month. Collected = rent received. Expenses = expenses paid. Left = collected minus expenses.
+  # Pick a property with the filter to see just that property; leave it empty for everything.
+  # Needs rent_payments.property_id filled (see rental_cash_additions.sql).
+  collected = sum rent_payments.amount where payment_status=COMPLETED "Collected" money
+  expenses = sum expenses_list.amount by=expense_date "Expenses" money
+  left = collected - expenses "What's Left" money
+
+  headline {label}: {collected} collected, {expenses} expenses, {left} left.
+  remark collected == 0 && expenses == 0 | neutral | No activity | No money moved in {label}.
+  remark left < 0 | bad | Overspent | {label}: expenses of {expenses} were more than the {collected} collected.
+  remark true | good | Positive | {label}: {collected} collected, {expenses} spent, {left} left.

@@ -10,17 +10,18 @@ report Properties "Arrears by Property"
   group property_id
   rows "Property"
   labels properties_list.property_id > property_name
-  sort overdue_amount desc
+  sort owed desc
 
-  open_invoices = count rent_invoices where invoice_status!=paid "Open Invoices"
+  # needs rent_invoices.property_id filled (see rental_data_repair.sql)
+  invoices = count rent_invoices "Invoices Due"
+  unpaid_inv = count rent_invoices where paid_amount=0 "Nothing Paid"
   billed = sum rent_invoices.total_amount "Billed" money
-  unpaid = sum rent_invoices.balance_amount where invoice_status!=paid "Unpaid Balance" money
-  late = count rent_invoices where invoice_status=overdue "Overdue Invoices"
-  overdue_amount = sum rent_invoices.balance_amount where invoice_status=overdue "Overdue Amount" money
-  arrears_rate = round(overdue_amount / billed * 100) "Arrears %"
-  share = share(overdue_amount) "Share of Arrears"
+  paid = sum rent_invoices.paid_amount "Paid" money
+  owed = billed - paid "Balance Owed" money
+  arrears_rate = round(owed / billed * 100) "Arrears %"
+  share = share(owed) "Share of Arrears"
 
-  headline {label} has the most arrears: {overdue_amount} overdue across {late} invoices, {arrears_rate}% of what was billed.
-  remark arrears_rate !== null && arrears_rate >= 30 | bad | Heavy arrears | {label}: {overdue_amount} overdue, {arrears_rate}% of the {billed} billed.
-  remark late > 0 | watch | Overdue | {label} has {late} overdue invoices worth {overdue_amount}.
-  remark true | good | Up to date | {label} has nothing overdue in this period.
+  headline {label} has the most arrears: {owed} owed, {arrears_rate}% of what was billed.
+  remark arrears_rate !== null && arrears_rate >= 30 | bad | Heavy arrears | {label}: {owed} owed, {arrears_rate}% of the {billed} billed.
+  remark owed > 0 | watch | Balance owed | {label} owes {owed} across {invoices} invoices.
+  remark true | good | Up to date | {label} has nothing owing in this period.

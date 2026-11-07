@@ -23,6 +23,8 @@ import { openEntityCreateModal, buildPresetFromRow } from "../../moduleControl/U
 import ExpenseslistProfile from "../../expenseslist/uiControl/ExpenseslistProfile";
 import PropertiespayoutsProfile from "../../propertiespayouts/uiControl/PropertiespayoutsProfile";
 import PropertiesunitsProfile from "../../propertiesunits/uiControl/PropertiesunitsProfile";
+import RentinvoicesProfile from "../../rentinvoices/uiControl/RentinvoicesProfile";
+import RentpaymentsProfile from "../../rentpayments/uiControl/RentpaymentsProfile";
 import { openSmartTagFilter } from "../../moduleControl/UiControl/smartFilterActions";
 import { openSmartDateFilter } from "../../moduleControl/UiControl/smartFilterActions";
 import { openSmartMapFilter } from "../../moduleControl/UiControl/smartFilterActions";
@@ -30,6 +32,8 @@ import { PropertieslandlordsSchema } from "../../propertieslandlords/Propertiesl
 import { ExpenseslistSchema } from "../../expenseslist/ExpenseslistSchema";
 import { PropertiespayoutsSchema } from "../../propertiespayouts/PropertiespayoutsSchema";
 import { PropertiesunitsSchema } from "../../propertiesunits/PropertiesunitsSchema";
+import { RentinvoicesSchema } from "../../rentinvoices/RentinvoicesSchema";
+import { RentpaymentsSchema } from "../../rentpayments/RentpaymentsSchema";
 // </auto-relations:imports>
 
 
@@ -109,6 +113,56 @@ const PropertieslistActions = {
       presetValues: {
         ...buildPresetFromRow(row, [
           { sourceKey: 'property_id', destKey: 'property_id', destSchema: PropertiesunitsSchema, labelValue: row.property_name },
+        ]),
+      },
+      lockedFields: ['property_id', fk?.labelKey].filter(Boolean), // mapped from the row: not shown, not editable, still saved
+      onSaved: refresh,
+    });
+  },
+
+  add_propertieslist_rentinvoices: ({ rows, refresh }) => {
+    const row = rows?.[0];
+    if (!row?.property_id) return;
+    const fk = RentinvoicesSchema.fields?.find((f) => f.key === 'property_id');
+    // other FKs this row shares with the form: carried over only when the row has a value, else left for the user to pick
+    const carried = [
+      { column: 'landlord_id', mirrors: [] },
+    ].filter(({ column }) => row[column] !== undefined && row[column] !== null && row[column] !== '');
+    const carriedPreset = {};
+    const carriedLocked = [];
+    carried.forEach(({ column, mirrors }) => {
+      const labelKey = RentinvoicesSchema.fields?.find((f) => f.key === column)?.labelKey;
+      const copies = [labelKey, ...mirrors].filter((k) => k && row[k] !== undefined);
+      carriedPreset[column] = row[column];
+      copies.forEach((k) => { carriedPreset[k] = row[k]; });
+      carriedLocked.push(column, ...new Set([...(labelKey ? [labelKey] : []), ...copies]));
+    });
+    openEntityCreateModal({
+      ProfileComponent: RentinvoicesProfile,
+      schema: RentinvoicesSchema,
+      title: `New Rent invoice — ${row.property_name || row.property_id}`,
+      presetValues: {
+        ...buildPresetFromRow(row, [
+          { sourceKey: 'property_id', destKey: 'property_id', destSchema: RentinvoicesSchema, labelValue: row.property_name },
+        ]),
+        ...carriedPreset,
+      },
+      lockedFields: ['property_id', fk?.labelKey, ...carriedLocked].filter(Boolean), // mapped from the row: not shown, not editable, still saved
+      onSaved: refresh,
+    });
+  },
+
+  add_propertieslist_rentpayments: ({ rows, refresh }) => {
+    const row = rows?.[0];
+    if (!row?.property_id) return;
+    const fk = RentpaymentsSchema.fields?.find((f) => f.key === 'property_id');
+    openEntityCreateModal({
+      ProfileComponent: RentpaymentsProfile,
+      schema: RentpaymentsSchema,
+      title: `New Rent payment — ${row.property_name || row.property_id}`,
+      presetValues: {
+        ...buildPresetFromRow(row, [
+          { sourceKey: 'property_id', destKey: 'property_id', destSchema: RentpaymentsSchema, labelValue: row.property_name },
         ]),
       },
       lockedFields: ['property_id', fk?.labelKey].filter(Boolean), // mapped from the row: not shown, not editable, still saved
@@ -213,6 +267,44 @@ const PropertieslistActions = {
       React.createElement(PropertiesunitsList, {
         customProfilePath: '../propertiesunits/profile',
         title: `Properties units — ${row.property_name || row.property_id}`,
+        fixedQuery,
+        hiddenActions: ['new'],
+      }),
+      React.createElement(ViewAllLink, { href, label: 'View more', onNavigate: router ? (url) => router.push(url) : undefined }),
+    ), true, 'modal4', 'mosycard_wide');
+  },
+
+  view_propertieslist_rentinvoices: async ({ rows, router }) => {
+    const row = rows?.[0];
+    if (!row?.property_id) return;
+    const { default: RentinvoicesList } = await import('../../rentinvoices/uiControl/RentinvoicesList');
+    const fixedQuery = { propertyId: btoa(row.property_id) };
+    // "View more" link: the list page reads <entity>_mosyfilter through MosySecureFilterEngine
+    // (value = base64 of "key=<base64 value>&..."), the same format as multiGridRows links.
+    const href = `/digitenant/rentinvoices/list?${new URLSearchParams({ rent_invoices_mosyfilter: btoa(new URLSearchParams(fixedQuery).toString()) })}`;
+    MosyCard('', React.createElement(React.Fragment, null,
+      React.createElement(RentinvoicesList, {
+        customProfilePath: '../rentinvoices/profile',
+        title: `Rent invoices — ${row.property_name || row.property_id}`,
+        fixedQuery,
+        hiddenActions: ['new'],
+      }),
+      React.createElement(ViewAllLink, { href, label: 'View more', onNavigate: router ? (url) => router.push(url) : undefined }),
+    ), true, 'modal4', 'mosycard_wide');
+  },
+
+  view_propertieslist_rentpayments: async ({ rows, router }) => {
+    const row = rows?.[0];
+    if (!row?.property_id) return;
+    const { default: RentpaymentsList } = await import('../../rentpayments/uiControl/RentpaymentsList');
+    const fixedQuery = { propertyId: btoa(row.property_id) };
+    // "View more" link: the list page reads <entity>_mosyfilter through MosySecureFilterEngine
+    // (value = base64 of "key=<base64 value>&..."), the same format as multiGridRows links.
+    const href = `/digitenant/rentpayments/list?${new URLSearchParams({ rent_payments_mosyfilter: btoa(new URLSearchParams(fixedQuery).toString()) })}`;
+    MosyCard('', React.createElement(React.Fragment, null,
+      React.createElement(RentpaymentsList, {
+        customProfilePath: '../rentpayments/profile',
+        title: `Rent payments — ${row.property_name || row.property_id}`,
         fixedQuery,
         hiddenActions: ['new'],
       }),

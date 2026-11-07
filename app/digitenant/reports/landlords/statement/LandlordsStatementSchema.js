@@ -6,7 +6,7 @@ const apiRoutes = getApiRoutes();
 
 export const LandlordsStatementSchema = {
   entity: 'rental_landlords_statement',
-  label: 'Landlord Statement',
+  label: 'Landlord Payouts',
   description: '',
   apiBase: apiRoutes.landlordsstatement?.base,
   moduleRole: 'view_reports',
@@ -24,7 +24,7 @@ export const LandlordsStatementSchema = {
     { key: 'commission', label: 'Commission', from: 'properties_payouts.commission_amount', type: 'money' },
     { key: 'net', label: 'Net Payable', from: 'properties_payouts.net_amount', type: 'money' },
     { key: 'paid_out', label: 'Paid Out', from: 'properties_payouts.net_amount', type: 'money' },
-    { key: 'owed', label: 'Still Owed', from: 'properties_payouts.net_amount', type: 'money' },
+    { key: 'owed', label: 'Still Owed', calc: 'net - paid_out', type: 'money' },
     { key: 'share', label: 'Share of Payouts', calc: 'share(net)' },
   ],
 

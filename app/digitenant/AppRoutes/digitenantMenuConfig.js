@@ -557,6 +557,16 @@ export const digitenantSidebarConfig = [
             label: "Billed vs Collected",
             href: (routes) => `${routes.digitenant}/reports/rent/billing/list`,
             roles: []
+          },
+          {
+            label: "Payment Methods",
+            href: (routes) => `${routes.digitenant}/reports/rent/methods/list`,
+            roles: []
+          },
+          {
+            label: "Rent Status by Tenant",
+            href: (routes) => `${routes.digitenant}/reports/rent/status/list`,
+            roles: []
           }
           // gen-report:group:rent:end
         ]
@@ -588,6 +598,11 @@ export const digitenantSidebarConfig = [
             label: "Income by Property",
             href: (routes) => `${routes.digitenant}/reports/income/properties/list`,
             roles: []
+          },
+          {
+            label: "Income by Landlord",
+            href: (routes) => `${routes.digitenant}/reports/income/landlords/list`,
+            roles: []
           }
           // gen-report:group:income:end
         ]
@@ -601,8 +616,49 @@ export const digitenantSidebarConfig = [
             label: "Landlord Statement",
             href: (routes) => `${routes.digitenant}/reports/landlords/statement/list`,
             roles: []
+          },
+          {
+            label: "Landlord Cash Statement",
+            href: (routes) => `${routes.digitenant}/reports/landlords/cash/list`,
+            roles: []
+          },
+          {
+            label: "Cash by Property",
+            href: (routes) => `${routes.digitenant}/reports/landlords/properties/list`,
+            roles: []
           }
           // gen-report:group:landlords:end
+        ]
+      },
+      {
+        type: "submenu",
+        label: "Tenants",
+        roles: [],
+        items: [
+          {
+            label: "Lease Expiries",
+            href: (routes) => `${routes.digitenant}/reports/tenants/expiries/list`,
+            roles: []
+          }
+          // gen-report:group:tenants:end
+        ]
+      },
+      {
+        type: "submenu",
+        label: "Maintenance",
+        roles: [],
+        items: [
+          {
+            label: "Maintenance by Category",
+            href: (routes) => `${routes.digitenant}/reports/maintenance/categories/list`,
+            roles: []
+          },
+          {
+            label: "Maintenance by Vendor",
+            href: (routes) => `${routes.digitenant}/reports/maintenance/vendors/list`,
+            roles: []
+          }
+          // gen-report:group:maintenance:end
         ]
       }
       // gen-report:reports:end

@@ -1,0 +1,22 @@
+report Properties "Cash by Property"
+  by dimension
+  date payment_date
+  entity rental_landlords_cash_property
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group property_id
+  rows "Property"
+  labels properties_list.property_id > property_name
+  sort left desc
+
+  # Same statement with one row per property for the date range you pick.
+  collected = sum rent_payments.amount where payment_status=COMPLETED via rent_invoices on invoice_id=invoice_id by=payment_date "Collected" money
+  expenses = sum expenses_list.amount by=expense_date "Expenses" money
+  left = collected - expenses "What's Left" money
+
+  headline {label} has {left} left: {collected} collected, {expenses} expenses.
+  remark left < 0 | bad | Overspent | {label}: expenses of {expenses} were more than the {collected} collected.
+  remark true | good | Position | {label}: {collected} collected, {expenses} spent, {left} left.

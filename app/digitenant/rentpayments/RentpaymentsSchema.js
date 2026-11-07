@@ -100,9 +100,11 @@ export const RentpaymentsSchema = {
     { key: 'filter_rentpayments_payment_date', label: 'Filter by payment date', icon: 'calendar', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false },
     { key: 'filter_rentpayments_payment_method', label: 'Filter by payment method', icon: 'tag', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false },
     { key: 'filter_rentpayments_payment_status', label: 'Filter by payment status', icon: 'tag', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false },
+    { key: 'filter_rentpayments_propertieslist', label: 'Filter by Properties list', icon: 'filter', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false, role: 'view_propertieslist' },
     { key: 'filter_rentpayments_reg_date', label: 'Filter by created on', icon: 'calendar', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false },
     { key: 'filter_rentpayments_rentinvoices', label: 'Filter by Rent invoice', icon: 'filter', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false, role: 'view_rentinvoices' },
     { key: 'filter_rentpayments_tenantslist', label: 'Filter by Tenants list', icon: 'filter', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false, role: 'view_tenantslist' },
+    { key: 'view_rentpayments_propertieslist_profile', label: 'View Properties list', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_propertieslist' },
     { key: 'view_rentpayments_rentinvoices_profile', label: 'View Rent invoice', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_rentinvoices' },
     { key: 'view_rentpayments_tenantslist_profile', label: 'View Tenants list', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_tenantslist' },
     // </auto-relations:actions>
@@ -123,14 +125,14 @@ export const RentpaymentsSchema = {
 
   fieldGroups: [],
   // Field keys shown as columns in list view, in display order.
-  showInList: ['row_count', 'payment_date', 'amount', 'payment_method', 'ref_no', 'invoice_id_2', 'tenant_name', 'payment_status'],
+  showInList: ['row_count', 'payment_date', 'amount', 'payment_method', 'ref_no', 'invoice_id_2', 'tenant_name', 'property_name'],
 
   //export columns these columns are used to generate upload csv template file
-  exportColumns: ['payment_id', 'payment_date', 'amount', 'payment_method', 'ref_no', 'invoice_id', 'tenant_id', 'payment_status'],
+  exportColumns: ['payment_id', 'payment_date', 'amount', 'payment_method', 'ref_no', 'invoice_id', 'tenant_id', 'property_id'],
 
   sections: [
-    { key: 'basic_information', label: 'Basic Information', columns: 3, fields: ['payment_date', 'amount', 'payment_method', 'ref_no', 'invoice_id', 'tenant_id', 'payment_status'] },
-    { key: 'other_details', label: 'Other Details', columns: 3, fields: ['reg_date'] },
+    { key: 'basic_information', label: 'Basic Information', columns: 3, fields: ['payment_date', 'amount', 'payment_method', 'ref_no', 'invoice_id', 'tenant_id', 'property_id'] },
+    { key: 'other_details', label: 'Other Details', columns: 3, fields: ['payment_status', 'reg_date'] },
   ],
 
   fields: [
@@ -143,6 +145,7 @@ export const RentpaymentsSchema = {
     { key: 'ref_no', label: 'Ref No', type: 'text' },
     ...resolveField('invoice_id', { as: 'invoice_id_2', colSpan: 4 }),
     ...resolveField('tenant_id', { as: 'tenant_name', colSpan: 4 }),
+    ...resolveField('property_id', { as: 'property_name', colSpan: 4 }),
     { key: 'payment_status', label: 'Payment Status', type: 'groupedSelect', endpoint: moduleApi, groupByField: 'payment_status' },
     //   ↑ colour it: add  badges: { active: 'green', inactive: 'red', pending: 'amber' }  inside the braces above
     { key: 'reg_date', label: 'Created On', type: 'datetime' },

@@ -15,21 +15,22 @@ export const ArrearsTenantsSchema = {
 
   groupBy: 'tenant',
   groupLabel: 'Tenant',
-  sortBy: 'overdue_amount desc',
+  sortBy: 'owed desc',
 
   fields: [
-    { key: 'open_invoices', label: 'Open Invoices', from: 'rent_invoices' },
-    { key: 'unpaid', label: 'Unpaid Balance', from: 'rent_invoices.balance_amount', type: 'money' },
-    { key: 'late', label: 'Overdue Invoices', from: 'rent_invoices' },
-    { key: 'overdue_amount', label: 'Overdue Amount', from: 'rent_invoices.balance_amount', type: 'money' },
-    { key: 'share', label: 'Share of Arrears', calc: 'share(overdue_amount)' },
+    { key: 'invoices', label: 'Invoices Due', from: 'rent_invoices' },
+    { key: 'unpaid_inv', label: 'Nothing Paid', from: 'rent_invoices' },
+    { key: 'billed', label: 'Billed', from: 'rent_invoices.total_amount', type: 'money' },
+    { key: 'paid', label: 'Paid', from: 'rent_invoices.paid_amount', type: 'money' },
+    { key: 'owed', label: 'Balance Owed', calc: 'billed - paid', type: 'money' },
+    { key: 'share', label: 'Share of Arrears', calc: 'share(owed)' },
   ],
 
   remarks: [
-    { if: 'late > 0', tone: 'bad', title: 'Overdue', say: '{label} has {late} overdue invoices worth {overdue_amount}.' },
-    { if: 'open_invoices > 0', tone: 'watch', title: 'Unpaid', say: '{label} has {unpaid} unpaid across {open_invoices} open invoices, none overdue yet.' },
-    { if: 'true', tone: 'good', title: 'Up to date', say: '{label} has nothing outstanding in this period.' },
+    { if: 'unpaid_inv > 0', tone: 'bad', title: 'Not paying', say: '{label} has {unpaid_inv} invoices with nothing paid and owes {owed} in total.' },
+    { if: 'owed > 0', tone: 'watch', title: 'Balance owed', say: '{label} owes {owed} of the {billed} billed.' },
+    { if: 'true', tone: 'good', title: 'Up to date', say: '{label} has paid everything due in this period.' },
   ],
 
-  headline: '{label} owes the most: {overdue_amount} overdue across {late} invoices, {unpaid} unpaid in total.',
+  headline: '{label} owes the most: {owed} across {invoices} invoices, {unpaid_inv} with nothing paid.',
 };

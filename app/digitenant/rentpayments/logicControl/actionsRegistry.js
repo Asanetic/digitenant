@@ -22,6 +22,7 @@ import ViewAllLink from "../../../components/ViewAllLink";
 import { openSmartDateFilter } from "../../moduleControl/UiControl/smartFilterActions";
 import { openSmartTagFilter } from "../../moduleControl/UiControl/smartFilterActions";
 import { openSmartMapFilter } from "../../moduleControl/UiControl/smartFilterActions";
+import { PropertieslistSchema } from "../../propertieslist/PropertieslistSchema";
 import { RentinvoicesSchema } from "../../rentinvoices/RentinvoicesSchema";
 import { TenantslistSchema } from "../../tenantslist/TenantslistSchema";
 // </auto-relations:imports>
@@ -61,6 +62,15 @@ const RentpaymentsActions = {
     combine: true,
   }),
 
+  filter_rentpayments_propertieslist: (ctx) => openSmartMapFilter(ctx, {
+    title: 'Filter by properties list',
+    searchSchema: PropertieslistSchema,
+    displayField: 'property_name',
+    valueField: 'property_id',
+    localColumnKey: 'property_id',
+    combine: true,
+  }),
+
   filter_rentpayments_reg_date: (ctx) => openSmartDateFilter(ctx, {
     title: 'Filter by created on',
     columnKey: 'reg_date',
@@ -85,6 +95,25 @@ const RentpaymentsActions = {
     localColumnKey: 'tenant_id',
     combine: true,
   }),
+
+  view_rentpayments_propertieslist_profile: async ({ rows, router }) => {
+    const row = rows?.[0];
+    if (!row?.property_id) return;
+    const { default: PropertieslistList } = await import('../../propertieslist/uiControl/PropertieslistList');
+    const fixedQuery = { propertyId: btoa(row.property_id) };
+    // "View more" link: the list page reads <entity>_mosyfilter through MosySecureFilterEngine
+    // (value = base64 of "key=<base64 value>&..."), the same format as multiGridRows links.
+    const href = `/digitenant/propertieslist/list?${new URLSearchParams({ properties_list_mosyfilter: btoa(new URLSearchParams(fixedQuery).toString()) })}`;
+    MosyCard('', React.createElement(React.Fragment, null,
+      React.createElement(PropertieslistList, {
+        customProfilePath: '../propertieslist/profile',
+        title: `Properties list — ${row.property_name || ''}`,
+        fixedQuery,
+        hiddenActions: ['new'],
+      }),
+      React.createElement(ViewAllLink, { href, label: 'View more', onNavigate: router ? (url) => router.push(url) : undefined }),
+    ), true, 'modal4', 'mosycard_wide');
+  },
 
   view_rentpayments_rentinvoices_profile: async ({ rows, router }) => {
     const row = rows?.[0];

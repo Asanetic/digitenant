@@ -1,0 +1,25 @@
+report Landlords "Income by Landlord"
+  by dimension
+  date payment_date
+  entity rental_income_landlords
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group landlord_id
+  rows "Landlord"
+  labels properties_landlords.landlord_id > landlord_name
+  sort collected desc
+
+  # works from invoices, so it does not need payouts to exist yet
+  payments = count rent_payments where payment_status=COMPLETED via rent_invoices on invoice_id=invoice_id by=payment_date "Payments"
+  collected = sum rent_payments.amount where payment_status=COMPLETED via rent_invoices on invoice_id=invoice_id by=payment_date "Rent Collected" money
+  billed = sum rent_invoices.total_amount by=invoice_date "Billed" money
+  rate = round(collected / billed * 100) "Collected %"
+  share = share(collected) "Share of Income"
+
+  headline {label} collected the most: {collected} from {payments} payments, {share}% of the total.
+  remark collected == 0 | bad | No income | {label} received no rent in this period.
+  remark rate !== null && rate < 70 | watch | Low collection | {label}: only {rate}% of the {billed} billed was collected.
+  remark true | good | Performing | {label}: {collected} collected, {share}% of total income.

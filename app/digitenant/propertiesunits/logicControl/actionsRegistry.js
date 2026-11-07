@@ -21,6 +21,7 @@ import { MosyCard } from "../../../components/MosyCard";
 import ViewAllLink from "../../../components/ViewAllLink";
 import { openEntityCreateModal, buildPresetFromRow } from "../../moduleControl/UiControl/EntityCreateModal";
 import MaintenancerequestsProfile from "../../maintenancerequests/uiControl/MaintenancerequestsProfile";
+import RentinvoicesProfile from "../../rentinvoices/uiControl/RentinvoicesProfile";
 import TenantsleasesProfile from "../../tenantsleases/uiControl/TenantsleasesProfile";
 import UtilitiesmetersProfile from "../../utilitiesmeters/uiControl/UtilitiesmetersProfile";
 import { openSmartDateFilter } from "../../moduleControl/UiControl/smartFilterActions";
@@ -28,6 +29,7 @@ import { openSmartTagFilter } from "../../moduleControl/UiControl/smartFilterAct
 import { openSmartMapFilter } from "../../moduleControl/UiControl/smartFilterActions";
 import { PropertieslistSchema } from "../../propertieslist/PropertieslistSchema";
 import { MaintenancerequestsSchema } from "../../maintenancerequests/MaintenancerequestsSchema";
+import { RentinvoicesSchema } from "../../rentinvoices/RentinvoicesSchema";
 import { TenantsleasesSchema } from "../../tenantsleases/TenantsleasesSchema";
 import { UtilitiesmetersSchema } from "../../utilitiesmeters/UtilitiesmetersSchema";
 // </auto-relations:imports>
@@ -62,6 +64,38 @@ const PropertiesunitsActions = {
         ]),
       },
       lockedFields: ['unit_id', fk?.labelKey].filter(Boolean), // mapped from the row: not shown, not editable, still saved
+      onSaved: refresh,
+    });
+  },
+
+  add_propertiesunits_rentinvoices: ({ rows, refresh }) => {
+    const row = rows?.[0];
+    if (!row?.unit_id) return;
+    const fk = RentinvoicesSchema.fields?.find((f) => f.key === 'unit_id');
+    // other FKs this row shares with the form: carried over only when the row has a value, else left for the user to pick
+    const carried = [
+      { column: 'property_id', mirrors: [] },
+    ].filter(({ column }) => row[column] !== undefined && row[column] !== null && row[column] !== '');
+    const carriedPreset = {};
+    const carriedLocked = [];
+    carried.forEach(({ column, mirrors }) => {
+      const labelKey = RentinvoicesSchema.fields?.find((f) => f.key === column)?.labelKey;
+      const copies = [labelKey, ...mirrors].filter((k) => k && row[k] !== undefined);
+      carriedPreset[column] = row[column];
+      copies.forEach((k) => { carriedPreset[k] = row[k]; });
+      carriedLocked.push(column, ...new Set([...(labelKey ? [labelKey] : []), ...copies]));
+    });
+    openEntityCreateModal({
+      ProfileComponent: RentinvoicesProfile,
+      schema: RentinvoicesSchema,
+      title: `New Rent invoice — ${row.unit_name || row.unit_id}`,
+      presetValues: {
+        ...buildPresetFromRow(row, [
+          { sourceKey: 'unit_id', destKey: 'unit_id', destSchema: RentinvoicesSchema, labelValue: row.unit_name },
+        ]),
+        ...carriedPreset,
+      },
+      lockedFields: ['unit_id', fk?.labelKey, ...carriedLocked].filter(Boolean), // mapped from the row: not shown, not editable, still saved
       onSaved: refresh,
     });
   },
@@ -161,6 +195,25 @@ const PropertiesunitsActions = {
       React.createElement(PropertieslistList, {
         customProfilePath: '../propertieslist/profile',
         title: `Properties list — ${row.property_name || ''}`,
+        fixedQuery,
+        hiddenActions: ['new'],
+      }),
+      React.createElement(ViewAllLink, { href, label: 'View more', onNavigate: router ? (url) => router.push(url) : undefined }),
+    ), true, 'modal4', 'mosycard_wide');
+  },
+
+  view_propertiesunits_rentinvoices: async ({ rows, router }) => {
+    const row = rows?.[0];
+    if (!row?.unit_id) return;
+    const { default: RentinvoicesList } = await import('../../rentinvoices/uiControl/RentinvoicesList');
+    const fixedQuery = { unitId: btoa(row.unit_id) };
+    // "View more" link: the list page reads <entity>_mosyfilter through MosySecureFilterEngine
+    // (value = base64 of "key=<base64 value>&..."), the same format as multiGridRows links.
+    const href = `/digitenant/rentinvoices/list?${new URLSearchParams({ rent_invoices_mosyfilter: btoa(new URLSearchParams(fixedQuery).toString()) })}`;
+    MosyCard('', React.createElement(React.Fragment, null,
+      React.createElement(RentinvoicesList, {
+        customProfilePath: '../rentinvoices/profile',
+        title: `Rent invoices — ${row.unit_name || row.unit_id}`,
         fixedQuery,
         hiddenActions: ['new'],
       }),

@@ -9,9 +9,9 @@ report Collections "Rent Collections"
 
   filter method = payment_method
 
-  # assumes payment_status=confirmed for a payment that counts as received
-  payments = count rent_payments where payment_status=confirmed "Payments"
-  collected = sum rent_payments.amount where payment_status=confirmed "Rent Collected" money
+  # payment_status values in your data: COMPLETED
+  payments = count rent_payments where payment_status=COMPLETED "Payments"
+  collected = sum rent_payments.amount where payment_status=COMPLETED "Rent Collected" money
   avg_payment = collected / payments "Average Payment" money
   chg = change(collected) "Collected vs Previous"
 

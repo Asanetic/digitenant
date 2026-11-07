@@ -21,7 +21,7 @@ export const RentBillingSchema = {
     { key: 'invoices', label: 'Invoices Issued', from: 'rent_invoices' },
     { key: 'billed', label: 'Billed', from: 'rent_invoices.total_amount', type: 'money' },
     { key: 'collected', label: 'Collected', from: 'rent_invoices.paid_amount', type: 'money' },
-    { key: 'outstanding', label: 'Outstanding', from: 'rent_invoices.balance_amount', type: 'money' },
+    { key: 'outstanding', label: 'Outstanding', calc: 'billed - collected', type: 'money' },
     { key: 'rate', label: 'Collected %', calc: 'round(collected / billed * 100)' },
     { key: 'chg', label: 'Billed vs Previous', calc: 'change(billed)' },
   ],

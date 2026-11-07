@@ -1,0 +1,26 @@
+report Status "Rent Status by Tenant"
+  by dimension
+  date invoice_date
+  entity rental_rent_status
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group tenant_id
+  rows "Tenant"
+  labels tenants_list.tenant_id > tenant_name
+  sort owed desc
+
+  # Pick the month as the date range, e.g. 2026-04-01 to 2026-04-30: shows who was billed that month and whether they paid.
+  # Tenants with no invoice that month are not listed (nothing was billed to them).
+  invoices = count rent_invoices "Invoices"
+  billed = sum rent_invoices.total_amount "Billed" money
+  paid = sum rent_invoices.paid_amount "Paid" money
+  owed = billed - paid "Balance" money
+  paid_pct = round(paid / billed * 100) "Paid %"
+
+  headline {label} has the largest balance: {owed} of {billed} billed ({paid_pct}% paid).
+  remark paid == 0 | bad | NOT PAID | {label} has paid nothing of the {billed} billed.
+  remark owed > 0 | watch | PART PAID | {label} has paid {paid} of {billed} ({paid_pct}%), {owed} is still owed.
+  remark true | good | PAID | {label} has paid the full {billed}.

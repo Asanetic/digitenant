@@ -97,7 +97,8 @@ export const PropertiesunitsSchema = {
     // lines by build-relations.js. Anything inside is regenerated on every run;
     // put hand-written actions OUTSIDE the markers.
     // <auto-relations:actions>
-    { key: 'add_propertiesunits_maintenancerequests', label: 'Add Maintenance request', icon: 'plus', form: true, grid: false, rowAction: true, editOnly: true },
+    { key: 'add_propertiesunits_maintenancerequests', label: 'Add Maintenance request', icon: 'plus', form: true, grid: false, rowAction: false, editOnly: true },
+    { key: 'add_propertiesunits_rentinvoices', label: 'Add Rent invoice', icon: 'plus', form: true, grid: false, rowAction: false, editOnly: true },
     { key: 'add_propertiesunits_tenantsleases', label: 'Add Tenants lease', icon: 'plus', form: true, grid: false, rowAction: false, editOnly: true },
     { key: 'add_propertiesunits_utilitiesmeters', label: 'Add Utilities meter', icon: 'plus', form: true, grid: false, rowAction: false, editOnly: true },
     { key: 'filter_propertiesunits_propertieslist', label: 'Filter by Properties list', icon: 'filter', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false, role: 'view_propertieslist' },
@@ -106,6 +107,7 @@ export const PropertiesunitsSchema = {
     { key: 'filter_propertiesunits_unit_type', label: 'Filter by unit type', icon: 'tag', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false },
     { key: 'view_propertiesunits_maintenancerequests', label: 'View Maintenance requests', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_maintenancerequests' },
     { key: 'view_propertiesunits_propertieslist_profile', label: 'View Properties list', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_propertieslist' },
+    { key: 'view_propertiesunits_rentinvoices', label: 'View Rent invoices', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_rentinvoices' },
     { key: 'view_propertiesunits_tenantsleases', label: 'View Tenants leases', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_tenantsleases' },
     { key: 'view_propertiesunits_utilitiesmeters', label: 'View Utilities meters', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_utilitiesmeters' },
     // </auto-relations:actions>

@@ -10,10 +10,9 @@ export const ArrearsPropertiesSchema = {
   maxRangeDays: 1200,
 
   measures: [
-    { key: 'open_invoices', table: 'rent_invoices', agg: 'count', group: 'property_id', by: 'due_date', where: [{ col: 'invoice_status', op: '!=', val: 'paid' }] },
+    { key: 'invoices', table: 'rent_invoices', agg: 'count', group: 'property_id', by: 'due_date' },
+    { key: 'unpaid_inv', table: 'rent_invoices', agg: 'count', group: 'property_id', by: 'due_date', where: [{ col: 'paid_amount', op: '=', val: 0 }] },
     { key: 'billed', table: 'rent_invoices', agg: 'sum', col: 'total_amount', group: 'property_id', by: 'due_date' },
-    { key: 'unpaid', table: 'rent_invoices', agg: 'sum', col: 'balance_amount', group: 'property_id', by: 'due_date', where: [{ col: 'invoice_status', op: '!=', val: 'paid' }] },
-    { key: 'late', table: 'rent_invoices', agg: 'count', group: 'property_id', by: 'due_date', where: [{ col: 'invoice_status', op: '=', val: 'overdue' }] },
-    { key: 'overdue_amount', table: 'rent_invoices', agg: 'sum', col: 'balance_amount', group: 'property_id', by: 'due_date', where: [{ col: 'invoice_status', op: '=', val: 'overdue' }] },
+    { key: 'paid', table: 'rent_invoices', agg: 'sum', col: 'paid_amount', group: 'property_id', by: 'due_date' },
   ],
 };

@@ -15,23 +15,23 @@ export const ArrearsPropertiesSchema = {
 
   groupBy: 'property',
   groupLabel: 'Property',
-  sortBy: 'overdue_amount desc',
+  sortBy: 'owed desc',
 
   fields: [
-    { key: 'open_invoices', label: 'Open Invoices', from: 'rent_invoices' },
+    { key: 'invoices', label: 'Invoices Due', from: 'rent_invoices' },
+    { key: 'unpaid_inv', label: 'Nothing Paid', from: 'rent_invoices' },
     { key: 'billed', label: 'Billed', from: 'rent_invoices.total_amount', type: 'money' },
-    { key: 'unpaid', label: 'Unpaid Balance', from: 'rent_invoices.balance_amount', type: 'money' },
-    { key: 'late', label: 'Overdue Invoices', from: 'rent_invoices' },
-    { key: 'overdue_amount', label: 'Overdue Amount', from: 'rent_invoices.balance_amount', type: 'money' },
-    { key: 'arrears_rate', label: 'Arrears %', calc: 'round(overdue_amount / billed * 100)' },
-    { key: 'share', label: 'Share of Arrears', calc: 'share(overdue_amount)' },
+    { key: 'paid', label: 'Paid', from: 'rent_invoices.paid_amount', type: 'money' },
+    { key: 'owed', label: 'Balance Owed', calc: 'billed - paid', type: 'money' },
+    { key: 'arrears_rate', label: 'Arrears %', calc: 'round(owed / billed * 100)' },
+    { key: 'share', label: 'Share of Arrears', calc: 'share(owed)' },
   ],
 
   remarks: [
-    { if: 'arrears_rate !== null && arrears_rate >= 30', tone: 'bad', title: 'Heavy arrears', say: '{label}: {overdue_amount} overdue, {arrears_rate}% of the {billed} billed.' },
-    { if: 'late > 0', tone: 'watch', title: 'Overdue', say: '{label} has {late} overdue invoices worth {overdue_amount}.' },
-    { if: 'true', tone: 'good', title: 'Up to date', say: '{label} has nothing overdue in this period.' },
+    { if: 'arrears_rate !== null && arrears_rate >= 30', tone: 'bad', title: 'Heavy arrears', say: '{label}: {owed} owed, {arrears_rate}% of the {billed} billed.' },
+    { if: 'owed > 0', tone: 'watch', title: 'Balance owed', say: '{label} owes {owed} across {invoices} invoices.' },
+    { if: 'true', tone: 'good', title: 'Up to date', say: '{label} has nothing owing in this period.' },
   ],
 
-  headline: '{label} has the most arrears: {overdue_amount} overdue across {late} invoices, {arrears_rate}% of what was billed.',
+  headline: '{label} has the most arrears: {owed} owed, {arrears_rate}% of what was billed.',
 };

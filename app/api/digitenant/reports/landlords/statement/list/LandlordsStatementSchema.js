@@ -15,7 +15,6 @@ export const LandlordsStatementSchema = {
     { key: 'expenses', table: 'properties_payouts', agg: 'sum', col: 'expenses_amount', group: 'landlord_id', by: 'period_end' },
     { key: 'commission', table: 'properties_payouts', agg: 'sum', col: 'commission_amount', group: 'landlord_id', by: 'period_end' },
     { key: 'net', table: 'properties_payouts', agg: 'sum', col: 'net_amount', group: 'landlord_id', by: 'period_end' },
-    { key: 'paid_out', table: 'properties_payouts', agg: 'sum', col: 'net_amount', group: 'landlord_id', by: 'period_end', where: [{ col: 'payout_status', op: '=', val: 'paid' }] },
-    { key: 'owed', table: 'properties_payouts', agg: 'sum', col: 'net_amount', group: 'landlord_id', by: 'period_end', where: [{ col: 'payout_status', op: '!=', val: 'paid' }] },
+    { key: 'paid_out', table: 'properties_payouts', agg: 'sum', col: 'net_amount', group: 'landlord_id', by: 'period_end', where: [{ col: 'payout_status', op: '=', val: 'PAID' }] },
   ],
 };

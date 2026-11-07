@@ -39,7 +39,7 @@ export const globalRelations = {
     displayField: "invoice_id",
     cacheField: "invoice_id",
     label: "Invoice",
-    // used by: rent_items, rent_payments
+    // used by: rent_items, rent_payments, messages_log
   },
 
   landlord_id: {
@@ -75,7 +75,25 @@ export const globalRelations = {
     displayField: "property_name",
     cacheField: "property_name",
     label: "Property",
-    // used by: properties_units, properties_payouts, expenses_list
+    // used by: properties_units, properties_payouts, rent_payments, expenses_list
+  },
+
+  reminder_id: {
+    table: "messages_reminders",
+    valueField: "reminder_id",
+    displayField: "reminder_name",
+    cacheField: "reminder_name",
+    label: "Reminder",
+    // used by: messages_log
+  },
+
+  template_id: {
+    table: "messages_templates",
+    valueField: "template_id",
+    displayField: "template_name",
+    cacheField: "template_name",
+    label: "Template",
+    // used by: messages_reminders, messages_log
   },
 
   tenant_id: {
@@ -84,7 +102,7 @@ export const globalRelations = {
     displayField: "tenant_name",
     cacheField: "tenant_name",
     label: "Tenant",
-    // used by: tenants_leases, rent_invoices, rent_payments, maintenance_requests
+    // used by: tenants_leases, rent_invoices, rent_payments, maintenance_requests, messages_log
   },
 
   unit_id: {

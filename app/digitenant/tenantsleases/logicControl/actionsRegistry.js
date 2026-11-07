@@ -52,6 +52,7 @@ const TenantsleasesActions = {
     // other FKs this row shares with the form: carried over only when the row has a value, else left for the user to pick
     const carried = [
       { column: 'tenant_id', mirrors: [] },
+      { column: 'unit_id', mirrors: [] },
     ].filter(({ column }) => row[column] !== undefined && row[column] !== null && row[column] !== '');
     const carriedPreset = {};
     const carriedLocked = [];

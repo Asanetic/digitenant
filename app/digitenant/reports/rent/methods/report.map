@@ -1,0 +1,21 @@
+report Methods "Payment Methods"
+  by dimension
+  date payment_date
+  entity rental_rent_methods
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group payment_method
+  rows "Method"
+  sort collected desc
+
+  payments = count rent_payments where payment_status=COMPLETED "Payments"
+  collected = sum rent_payments.amount where payment_status=COMPLETED "Rent Collected" money
+  avg_payment = collected / payments "Average Payment" money
+  share = share(collected) "Share of Collections"
+
+  headline {label} is the most used: {payments} payments, {collected} collected, {share}% of all rent.
+  remark payments == 0 | neutral | Unused | Nothing was received by {label} in this period.
+  remark true | neutral | Method | {label}: {payments} payments totalling {collected}, averaging {avg_payment}.

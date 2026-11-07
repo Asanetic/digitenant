@@ -14,7 +14,7 @@ rent_invoices:invoice_id|lease_id:lease_id:tenants_leases(Lease),tenant_id:tenan
 
 rent_items:item_type|invoice_id:invoice_id:rent_invoices(Invoice)
 
-rent_payments:payment_id|invoice_id:invoice_id:rent_invoices(Invoice),tenant_id:tenant_id:tenants_list(Tenant)
+rent_payments:payment_id|invoice_id:invoice_id:rent_invoices(Invoice),tenant_id:tenant_id:tenants_list(Tenant),property_id:property_id:properties_list(Property)
 
 maintenance_vendors:vendor_name|
 
@@ -27,3 +27,9 @@ utilities_readings:reading_id|meter_id:meter_id:utilities_meters(Meter)
 expenses_categories:category_name|
 
 expenses_list:expense_id|category_id:category_id:expenses_categories(Category),property_id:property_id:properties_list(Property)
+
+messages_templates:template_name|
+
+messages_reminders:reminder_name|template_id:template_id:messages_templates(Template)
+
+messages_log:message_id|tenant_id:tenant_id:tenants_list(Tenant),invoice_id:invoice_id:rent_invoices(Invoice),template_id:template_id:messages_templates(Template),reminder_id:reminder_id:messages_reminders(Reminder)

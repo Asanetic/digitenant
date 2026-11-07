@@ -295,3 +295,82 @@ report Statement "Landlord Payouts"
   headline {label} has the largest payout: {net} net from {collected} collected, {owed} still owed.
   remark owed > 0 | watch | Payout due | {label}: {owed} still to be paid out of {net} net.
   remark true | good | Settled | {label}: {net} net paid out after {commission} commission and {expenses} expenses.
+
+
+report Cash "Property Cash Statement"
+  nest landlords
+  by month|year
+  date payment_date
+  entity rental_landlords_cash
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  filter property = property_id
+
+  # Actual money only, by month. Collected = rent received. Expenses = expenses paid. Left = collected minus expenses.
+  # Pick a property with the filter to see just that property; leave it empty for everything.
+  # Needs rent_payments.property_id filled (see rental_cash_additions.sql).
+  collected = sum rent_payments.amount where payment_status=COMPLETED "Collected" money
+  expenses = sum expenses_list.amount by=expense_date "Expenses" money
+  left = collected - expenses "What's Left" money
+
+  headline {label}: {collected} collected, {expenses} expenses, {left} left.
+  remark collected == 0 && expenses == 0 | neutral | No activity | No money moved in {label}.
+  remark left < 0 | bad | Overspent | {label}: expenses of {expenses} were more than the {collected} collected.
+  remark true | good | Positive | {label}: {collected} collected, {expenses} spent, {left} left.
+
+
+report Properties "Cash by Property"
+  nest landlords
+  by dimension
+  date payment_date
+  entity rental_landlords_cash_property
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group property_id
+  rows "Property"
+  labels properties_list.property_id > property_name
+  sort left desc
+
+  # Same statement with one row per property for the date range you pick.
+  collected = sum rent_payments.amount where payment_status=COMPLETED via rent_invoices on invoice_id=invoice_id by=payment_date "Collected" money
+  expenses = sum expenses_list.amount by=expense_date "Expenses" money
+  left = collected - expenses "What's Left" money
+
+  headline {label} has {left} left: {collected} collected, {expenses} expenses.
+  remark left < 0 | bad | Overspent | {label}: expenses of {expenses} were more than the {collected} collected.
+  remark true | good | Position | {label}: {collected} collected, {expenses} spent, {left} left.
+
+
+report Status "Rent Status by Tenant"
+  nest rent
+  by dimension
+  date invoice_date
+  entity rental_rent_status
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group tenant_id
+  rows "Tenant"
+  labels tenants_list.tenant_id > tenant_name
+  sort owed desc
+
+  # Pick the month as the date range, e.g. 2026-04-01 to 2026-04-30: shows who was billed that month and whether they paid.
+  # Tenants with no invoice that month are not listed (nothing was billed to them).
+  invoices = count rent_invoices "Invoices"
+  billed = sum rent_invoices.total_amount "Billed" money
+  paid = sum rent_invoices.paid_amount "Paid" money
+  owed = billed - paid "Balance" money
+  paid_pct = round(paid / billed * 100) "Paid %"
+
+  headline {label} has the largest balance: {owed} of {billed} billed ({paid_pct}% paid).
+  remark paid == 0 | bad | NOT PAID | {label} has paid nothing of the {billed} billed.
+  remark owed > 0 | watch | PART PAID | {label} has paid {paid} of {billed} ({paid_pct}%), {owed} is still owed.
+  remark true | good | PAID | {label} has paid the full {billed}.

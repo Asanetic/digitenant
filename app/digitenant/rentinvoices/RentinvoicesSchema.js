@@ -97,17 +97,23 @@ export const RentinvoicesSchema = {
     // lines by build-relations.js. Anything inside is regenerated on every run;
     // put hand-written actions OUTSIDE the markers.
     // <auto-relations:actions>
-    { key: 'add_rentinvoices_rentitems', label: 'Add Rent item', icon: 'plus', form: true, grid: false, rowAction: true, editOnly: true },
+    { key: 'add_rentinvoices_rentitems', label: 'Add Rent item', icon: 'plus', form: true, grid: false, rowAction: false, editOnly: true },
     { key: 'add_rentinvoices_rentpayments', label: 'Add Rent payment', icon: 'plus', form: true, grid: false, rowAction: false, editOnly: true },
     { key: 'filter_rentinvoices_billing_period', label: 'Filter by billing period', icon: 'tag', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false },
     { key: 'filter_rentinvoices_due_date', label: 'Filter by due date', icon: 'calendar', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false },
     { key: 'filter_rentinvoices_invoice_date', label: 'Filter by invoice date', icon: 'calendar', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false },
     { key: 'filter_rentinvoices_invoice_status', label: 'Filter by invoice status', icon: 'tag', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false },
+    { key: 'filter_rentinvoices_propertieslandlords', label: 'Filter by Properties landlord', icon: 'filter', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false, role: 'view_propertieslandlords' },
+    { key: 'filter_rentinvoices_propertieslist', label: 'Filter by Properties list', icon: 'filter', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false, role: 'view_propertieslist' },
+    { key: 'filter_rentinvoices_propertiesunits', label: 'Filter by Properties unit', icon: 'filter', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false, role: 'view_propertiesunits' },
     { key: 'filter_rentinvoices_reg_date', label: 'Filter by created on', icon: 'calendar', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false },
     { key: 'filter_rentinvoices_tenantsleases', label: 'Filter by Tenants lease', icon: 'filter', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false, role: 'view_tenantsleases' },
     { key: 'filter_rentinvoices_tenantslist', label: 'Filter by Tenants list', icon: 'filter', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false, role: 'view_tenantslist' },
-    { key: 'view_rentinvoices_rentitems', label: 'View Rent items', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_rentitems' },
-    { key: 'view_rentinvoices_rentpayments', label: 'View Rent payments', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_rentpayments' },
+    { key: 'view_rentinvoices_propertieslandlords_profile', label: 'View Properties landlord', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_propertieslandlords' },
+    { key: 'view_rentinvoices_propertieslist_profile', label: 'View Properties list', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_propertieslist' },
+    { key: 'view_rentinvoices_propertiesunits_profile', label: 'View Properties unit', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_propertiesunits' },
+    { key: 'view_rentinvoices_rentitems', label: 'View Rent items', icon: 'list', form: true, grid: false, rowAction: false, editOnly: true, role: 'view_rentitems' },
+    { key: 'view_rentinvoices_rentpayments', label: 'View Rent payments', icon: 'list', form: true, grid: false, rowAction: false, editOnly: true, role: 'view_rentpayments' },
     { key: 'view_rentinvoices_tenantsleases_profile', label: 'View Tenants lease', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_tenantsleases' },
     { key: 'view_rentinvoices_tenantslist_profile', label: 'View Tenants list', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_tenantslist' },
     // </auto-relations:actions>
@@ -128,14 +134,14 @@ export const RentinvoicesSchema = {
 
   fieldGroups: [],
   // Field keys shown as columns in list view, in display order.
-  showInList: ['row_count', 'lease_id_2', 'tenant_name', 'invoice_date', 'due_date', 'billing_period', 'total_amount', 'paid_amount'],
+  showInList: ['row_count', 'lease_id_2', 'tenant_name', 'unit_name', 'property_name', 'landlord_name', 'invoice_date', 'due_date'],
 
   //export columns these columns are used to generate upload csv template file
-  exportColumns: ['invoice_id', 'lease_id', 'tenant_id', 'invoice_date', 'due_date', 'billing_period', 'total_amount', 'paid_amount'],
+  exportColumns: ['invoice_id', 'lease_id', 'tenant_id', 'unit_id', 'property_id', 'landlord_id', 'invoice_date', 'due_date'],
 
   sections: [
-    { key: 'basic_information', label: 'Basic Information', columns: 3, fields: ['lease_id', 'tenant_id', 'invoice_date', 'due_date', 'billing_period', 'total_amount', 'paid_amount'] },
-    { key: 'other_details', label: 'Other Details', columns: 3, fields: ['balance_amount', 'invoice_status', 'reg_date'] },
+    { key: 'basic_information', label: 'Basic Information', columns: 3, fields: ['lease_id', 'tenant_id', 'unit_id', 'property_id', 'landlord_id', 'invoice_date', 'due_date'] },
+    { key: 'other_details', label: 'Other Details', columns: 3, fields: ['billing_period', 'total_amount', 'paid_amount', 'balance_amount', 'invoice_status', 'reg_date'] },
   ],
 
   fields: [
@@ -144,6 +150,9 @@ export const RentinvoicesSchema = {
     { key: 'invoice_id', label: 'Invoice Id', type: 'text', system: true, editable: false },
     ...resolveField('lease_id', { as: 'lease_id_2', colSpan: 4 }),
     ...resolveField('tenant_id', { as: 'tenant_name', colSpan: 4 }),
+    ...resolveField('unit_id', { as: 'unit_name', colSpan: 4 }),
+    ...resolveField('property_id', { as: 'property_name', colSpan: 4 }),
+    ...resolveField('landlord_id', { as: 'landlord_name', colSpan: 4 }),
     { key: 'invoice_date', label: 'Invoice Date', type: 'datetime' },
     { key: 'due_date', label: 'Due Date', type: 'datetime' },
     { key: 'billing_period', label: 'Billing Period', type: 'text' },

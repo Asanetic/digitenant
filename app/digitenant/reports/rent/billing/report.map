@@ -10,10 +10,11 @@ report Billing "Billed vs Collected"
   filter status = invoice_status
   filter property = property_id
 
+  # outstanding is worked out as billed minus paid, so it does not depend on balance_amount being filled
   invoices = count rent_invoices "Invoices Issued"
   billed = sum rent_invoices.total_amount "Billed" money
   collected = sum rent_invoices.paid_amount "Collected" money
-  outstanding = sum rent_invoices.balance_amount "Outstanding" money
+  outstanding = billed - collected "Outstanding" money
   rate = round(collected / billed * 100) "Collected %"
   chg = change(billed) "Billed vs Previous"
 

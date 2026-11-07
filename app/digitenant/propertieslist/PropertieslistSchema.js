@@ -97,9 +97,11 @@ export const PropertieslistSchema = {
     // lines by build-relations.js. Anything inside is regenerated on every run;
     // put hand-written actions OUTSIDE the markers.
     // <auto-relations:actions>
-    { key: 'add_propertieslist_expenseslist', label: 'Add Expenses list', icon: 'plus', form: true, grid: false, rowAction: true, editOnly: true },
+    { key: 'add_propertieslist_expenseslist', label: 'Add Expenses list', icon: 'plus', form: true, grid: false, rowAction: false, editOnly: true },
     { key: 'add_propertieslist_propertiespayouts', label: 'Add Properties payout', icon: 'plus', form: true, grid: false, rowAction: false, editOnly: true },
     { key: 'add_propertieslist_propertiesunits', label: 'Add Properties unit', icon: 'plus', form: true, grid: false, rowAction: false, editOnly: true },
+    { key: 'add_propertieslist_rentinvoices', label: 'Add Rent invoice', icon: 'plus', form: true, grid: false, rowAction: false, editOnly: true },
+    { key: 'add_propertieslist_rentpayments', label: 'Add Rent payment', icon: 'plus', form: true, grid: false, rowAction: false, editOnly: true },
     { key: 'filter_propertieslist_propertieslandlords', label: 'Filter by Properties landlord', icon: 'filter', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false, role: 'view_propertieslandlords' },
     { key: 'filter_propertieslist_property_status', label: 'Filter by property status', icon: 'tag', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false },
     { key: 'filter_propertieslist_property_type', label: 'Filter by property type', icon: 'tag', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false },
@@ -108,6 +110,8 @@ export const PropertieslistSchema = {
     { key: 'view_propertieslist_propertieslandlords_profile', label: 'View Properties landlord', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_propertieslandlords' },
     { key: 'view_propertieslist_propertiespayouts', label: 'View Properties payouts', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_propertiespayouts' },
     { key: 'view_propertieslist_propertiesunits', label: 'View Properties units', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_propertiesunits' },
+    { key: 'view_propertieslist_rentinvoices', label: 'View Rent invoices', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_rentinvoices' },
+    { key: 'view_propertieslist_rentpayments', label: 'View Rent payments', icon: 'list', form: true, grid: false, rowAction: false, editOnly: true, role: 'view_rentpayments' },
     // </auto-relations:actions>
   ],
 

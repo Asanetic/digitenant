@@ -27,6 +27,7 @@ export const RentpaymentsSchema = {
     { key: 'ref_no', type: 'text', searchable: true },
     { key: 'invoice_id', type: 'text', searchable: true },
     { key: 'tenant_id', type: 'text', searchable: true },
+    { key: 'property_id', type: 'text', searchable: true },
     { key: 'payment_status', type: 'groupedSelect', endpoint: '/api/digitenant/rentpayments/list', groupByField: 'payment_status', searchable: true },
     { key: 'hive_site_id', type: 'text', searchable: true },
     { key: 'hive_site_name', type: 'text', title: true, searchable: true },
@@ -39,6 +40,7 @@ export const RentpaymentsSchema = {
   batchMutations: {
     ...resolveJoin('invoice_id', { as: 'invoice_id_2' }),
     ...resolveJoin('tenant_id', { as: 'tenant_name' }),
+    ...resolveJoin('property_id', { as: 'property_name' }),
   },
 
   roles: { view: 'view_rentpayments', manage: 'manage_rentpayments' },

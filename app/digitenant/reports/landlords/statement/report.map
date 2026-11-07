@@ -1,4 +1,4 @@
-report Statement "Landlord Statement"
+report Statement "Landlord Payouts"
   by dimension
   date period_end
   entity rental_landlords_statement
@@ -12,14 +12,15 @@ report Statement "Landlord Statement"
   labels properties_landlords.landlord_id > landlord_name
   sort net desc
 
-  # assumes payout_status=paid once the landlord has been remitted
+  # reads properties_payouts, so it stays empty until payouts are generated
+  # assumes payout_status=PAID once the landlord has been remitted
   statements = count properties_payouts "Statements"
   collected = sum properties_payouts.collected_amount "Rent Collected" money
   expenses = sum properties_payouts.expenses_amount "Expenses" money
   commission = sum properties_payouts.commission_amount "Commission" money
   net = sum properties_payouts.net_amount "Net Payable" money
-  paid_out = sum properties_payouts.net_amount where payout_status=paid "Paid Out" money
-  owed = sum properties_payouts.net_amount where payout_status!=paid "Still Owed" money
+  paid_out = sum properties_payouts.net_amount where payout_status=PAID "Paid Out" money
+  owed = net - paid_out "Still Owed" money
   share = share(net) "Share of Payouts"
 
   headline {label} has the largest payout: {net} net from {collected} collected, {owed} still owed.

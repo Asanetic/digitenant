@@ -1,7 +1,7 @@
-RELATIONS REPORT — 11/3/2026, 5:22:27 PM — app: digitenant
-Modules found: 16   FK links found: 18
+RELATIONS REPORT — 11/7/2026, 1:47:34 PM — app: digitenant
+Modules found: 16   FK links found: 22
 
-LINKED (18)
+LINKED (22)
   rentitems.invoice_id -> rent_invoices
      rentitems: view_rentitems_rentinvoices_profile
      rentinvoices: view_rentinvoices_rentitems
@@ -20,23 +20,43 @@ LINKED (18)
   rentinvoices.lease_id -> tenants_leases
      rentinvoices: view_rentinvoices_tenantsleases_profile
      tenantsleases: view_tenantsleases_rentinvoices
-     tenantsleases: add_tenantsleases_rentinvoices   also maps tenant_id
+     tenantsleases: add_tenantsleases_rentinvoices   also maps tenant_id, unit_id
      rentinvoices: filter_rentinvoices_tenantsleases
   rentinvoices.tenant_id -> tenants_list
      rentinvoices: view_rentinvoices_tenantslist_profile
      tenantslist: view_tenantslist_rentinvoices
      tenantslist: add_tenantslist_rentinvoices
      rentinvoices: filter_rentinvoices_tenantslist
+  rentinvoices.unit_id -> properties_units
+     rentinvoices: view_rentinvoices_propertiesunits_profile
+     propertiesunits: view_propertiesunits_rentinvoices
+     propertiesunits: add_propertiesunits_rentinvoices   also maps property_id
+     rentinvoices: filter_rentinvoices_propertiesunits
+  rentinvoices.property_id -> properties_list
+     rentinvoices: view_rentinvoices_propertieslist_profile
+     propertieslist: view_propertieslist_rentinvoices
+     propertieslist: add_propertieslist_rentinvoices   also maps landlord_id
+     rentinvoices: filter_rentinvoices_propertieslist
+  rentinvoices.landlord_id -> properties_landlords
+     rentinvoices: view_rentinvoices_propertieslandlords_profile
+     propertieslandlords: view_propertieslandlords_rentinvoices
+     propertieslandlords: add_propertieslandlords_rentinvoices
+     rentinvoices: filter_rentinvoices_propertieslandlords
   rentpayments.invoice_id -> rent_invoices
      rentpayments: view_rentpayments_rentinvoices_profile
      rentinvoices: view_rentinvoices_rentpayments
-     rentinvoices: add_rentinvoices_rentpayments   also maps tenant_id
+     rentinvoices: add_rentinvoices_rentpayments   also maps tenant_id, property_id
      rentpayments: filter_rentpayments_rentinvoices
   rentpayments.tenant_id -> tenants_list
      rentpayments: view_rentpayments_tenantslist_profile
      tenantslist: view_tenantslist_rentpayments
      tenantslist: add_tenantslist_rentpayments
      rentpayments: filter_rentpayments_tenantslist
+  rentpayments.property_id -> properties_list
+     rentpayments: view_rentpayments_propertieslist_profile
+     propertieslist: view_propertieslist_rentpayments
+     propertieslist: add_propertieslist_rentpayments
+     rentpayments: filter_rentpayments_propertieslist
   tenantsleases.tenant_id -> tenants_list
      tenantsleases: view_tenantsleases_tenantslist_profile
      tenantslist: view_tenantslist_tenantsleases
@@ -154,9 +174,10 @@ COLUMN FILTERS (54)   — date columns and status/type/category-like columns
 
 ROW MENU LIMIT (5 per module) — these are on the profile page only, not in the row dropdown
   tenantslist: add_tenantslist_rentinvoices, add_tenantslist_rentpayments, add_tenantslist_tenantsleases
-  rentinvoices: add_rentinvoices_rentpayments
-  propertieslist: add_propertieslist_propertiespayouts, add_propertieslist_propertiesunits
-  propertiesunits: add_propertiesunits_tenantsleases, add_propertiesunits_utilitiesmeters
+  rentinvoices: view_rentinvoices_rentitems, view_rentinvoices_rentpayments, add_rentinvoices_rentitems, add_rentinvoices_rentpayments
+  propertieslist: view_propertieslist_rentpayments, add_propertieslist_expenseslist, add_propertieslist_propertiespayouts, add_propertieslist_propertiesunits, add_propertieslist_rentinvoices, add_propertieslist_rentpayments
+  propertiesunits: add_propertiesunits_maintenancerequests, add_propertiesunits_rentinvoices, add_propertiesunits_tenantsleases, add_propertiesunits_utilitiesmeters
+  propertieslandlords: add_propertieslandlords_rentinvoices
 
 FILES CHANGED (32) — previous copy of each is in <module>/_recycled/
   app/digitenant/rentitems/logicControl/actionsRegistry.js

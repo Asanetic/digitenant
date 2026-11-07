@@ -10,8 +10,8 @@ export const IncomePropertiesSchema = {
   maxRangeDays: 1200,
 
   measures: [
-    { key: 'payments', table: 'rent_payments', agg: 'count', by: 'payment_date', where: [{ col: 'payment_status', op: '=', val: 'confirmed' }], join: { table: 'rent_invoices', from: 'invoice_id', to: 'invoice_id', group: 'property_id', credit: 'full' } },
-    { key: 'collected', table: 'rent_payments', agg: 'sum', col: 'amount', by: 'payment_date', where: [{ col: 'payment_status', op: '=', val: 'confirmed' }], join: { table: 'rent_invoices', from: 'invoice_id', to: 'invoice_id', group: 'property_id', credit: 'full' } },
+    { key: 'payments', table: 'rent_payments', agg: 'count', by: 'payment_date', where: [{ col: 'payment_status', op: '=', val: 'COMPLETED' }], join: { table: 'rent_invoices', from: 'invoice_id', to: 'invoice_id', group: 'property_id', credit: 'full' } },
+    { key: 'collected', table: 'rent_payments', agg: 'sum', col: 'amount', by: 'payment_date', where: [{ col: 'payment_status', op: '=', val: 'COMPLETED' }], join: { table: 'rent_invoices', from: 'invoice_id', to: 'invoice_id', group: 'property_id', credit: 'full' } },
     { key: 'billed', table: 'rent_invoices', agg: 'sum', col: 'total_amount', group: 'property_id', by: 'invoice_date' },
   ],
 };

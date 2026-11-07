@@ -98,10 +98,12 @@ export const PropertieslandlordsSchema = {
     // <auto-relations:actions>
     { key: 'add_propertieslandlords_propertieslist', label: 'Add Properties list', icon: 'plus', form: true, grid: false, rowAction: true, editOnly: true },
     { key: 'add_propertieslandlords_propertiespayouts', label: 'Add Properties payout', icon: 'plus', form: true, grid: false, rowAction: true, editOnly: true },
+    { key: 'add_propertieslandlords_rentinvoices', label: 'Add Rent invoice', icon: 'plus', form: true, grid: false, rowAction: false, editOnly: true },
     { key: 'filter_propertieslandlords_landlord_status', label: 'Filter by landlord status', icon: 'tag', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false },
     { key: 'filter_propertieslandlords_reg_date', label: 'Filter by created on', icon: 'calendar', variant: 'outline-primary', type: 'action', grid: true, form: false, rowAction: false },
     { key: 'view_propertieslandlords_propertieslist', label: 'View Properties list', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_propertieslist' },
     { key: 'view_propertieslandlords_propertiespayouts', label: 'View Properties payouts', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_propertiespayouts' },
+    { key: 'view_propertieslandlords_rentinvoices', label: 'View Rent invoices', icon: 'list', form: true, grid: false, rowAction: true, editOnly: true, role: 'view_rentinvoices' },
     // </auto-relations:actions>
   ],
 
@@ -120,13 +122,14 @@ export const PropertieslandlordsSchema = {
 
   fieldGroups: [],
   // Field keys shown as columns in list view, in display order.
-  showInList: ['row_count', 'landlord_name', 'phone_number', 'email', 'payout_account', 'landlord_status', 'remark', 'reg_date'],
+  showInList: ['row_count', 'landlord_name', 'phone_number', 'email', 'payout_account', 'commission_percent', 'landlord_status', 'remark'],
 
   //export columns these columns are used to generate upload csv template file
-  exportColumns: ['landlord_id', 'landlord_name', 'phone_number', 'email', 'payout_account', 'landlord_status', 'remark', 'reg_date'],
+  exportColumns: ['landlord_id', 'landlord_name', 'phone_number', 'email', 'payout_account', 'commission_percent', 'landlord_status', 'remark'],
 
   sections: [
-    { key: 'basic_information', label: 'Basic Information', columns: 3, fields: ['landlord_name', 'phone_number', 'email', 'payout_account', 'landlord_status', 'remark', 'reg_date'] },
+    { key: 'basic_information', label: 'Basic Information', columns: 3, fields: ['landlord_name', 'phone_number', 'email', 'payout_account', 'commission_percent', 'landlord_status', 'remark'] },
+    { key: 'other_details', label: 'Other Details', columns: 3, fields: ['reg_date'] },
   ],
 
   fields: [
@@ -137,6 +140,7 @@ export const PropertieslandlordsSchema = {
     { key: 'phone_number', label: 'Phone Number', type: 'text' },
     { key: 'email', label: 'Email', type: 'text' },
     { key: 'payout_account', label: 'Payout Account', type: 'text' },
+    { key: 'commission_percent', label: 'Commission Percent', type: 'money', sum: true },
     { key: 'landlord_status', label: 'Landlord Status', type: 'groupedSelect', endpoint: moduleApi, groupByField: 'landlord_status' },
     //   ↑ colour it: add  badges: { active: 'green', inactive: 'red', pending: 'amber' }  inside the braces above
     { key: 'remark', label: 'Remark', type: 'textarea', colSpan: 12 },

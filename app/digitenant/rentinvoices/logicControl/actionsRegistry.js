@@ -25,6 +25,9 @@ import RentpaymentsProfile from "../../rentpayments/uiControl/RentpaymentsProfil
 import { openSmartTagFilter } from "../../moduleControl/UiControl/smartFilterActions";
 import { openSmartDateFilter } from "../../moduleControl/UiControl/smartFilterActions";
 import { openSmartMapFilter } from "../../moduleControl/UiControl/smartFilterActions";
+import { PropertieslandlordsSchema } from "../../propertieslandlords/PropertieslandlordsSchema";
+import { PropertieslistSchema } from "../../propertieslist/PropertieslistSchema";
+import { PropertiesunitsSchema } from "../../propertiesunits/PropertiesunitsSchema";
 import { TenantsleasesSchema } from "../../tenantsleases/TenantsleasesSchema";
 import { TenantslistSchema } from "../../tenantslist/TenantslistSchema";
 import { RentitemsSchema } from "../../rentitems/RentitemsSchema";
@@ -72,6 +75,7 @@ const RentinvoicesActions = {
     // other FKs this row shares with the form: carried over only when the row has a value, else left for the user to pick
     const carried = [
       { column: 'tenant_id', mirrors: [] },
+      { column: 'property_id', mirrors: [] },
     ].filter(({ column }) => row[column] !== undefined && row[column] !== null && row[column] !== '');
     const carriedPreset = {};
     const carriedLocked = [];
@@ -123,6 +127,33 @@ const RentinvoicesActions = {
     combine: true,
   }),
 
+  filter_rentinvoices_propertieslandlords: (ctx) => openSmartMapFilter(ctx, {
+    title: 'Filter by properties landlord',
+    searchSchema: PropertieslandlordsSchema,
+    displayField: 'landlord_name',
+    valueField: 'landlord_id',
+    localColumnKey: 'landlord_id',
+    combine: true,
+  }),
+
+  filter_rentinvoices_propertieslist: (ctx) => openSmartMapFilter(ctx, {
+    title: 'Filter by properties list',
+    searchSchema: PropertieslistSchema,
+    displayField: 'property_name',
+    valueField: 'property_id',
+    localColumnKey: 'property_id',
+    combine: true,
+  }),
+
+  filter_rentinvoices_propertiesunits: (ctx) => openSmartMapFilter(ctx, {
+    title: 'Filter by properties unit',
+    searchSchema: PropertiesunitsSchema,
+    displayField: 'unit_name',
+    valueField: 'unit_id',
+    localColumnKey: 'unit_id',
+    combine: true,
+  }),
+
   filter_rentinvoices_reg_date: (ctx) => openSmartDateFilter(ctx, {
     title: 'Filter by created on',
     columnKey: 'reg_date',
@@ -147,6 +178,63 @@ const RentinvoicesActions = {
     localColumnKey: 'tenant_id',
     combine: true,
   }),
+
+  view_rentinvoices_propertieslandlords_profile: async ({ rows, router }) => {
+    const row = rows?.[0];
+    if (!row?.landlord_id) return;
+    const { default: PropertieslandlordsList } = await import('../../propertieslandlords/uiControl/PropertieslandlordsList');
+    const fixedQuery = { landlordId: btoa(row.landlord_id) };
+    // "View more" link: the list page reads <entity>_mosyfilter through MosySecureFilterEngine
+    // (value = base64 of "key=<base64 value>&..."), the same format as multiGridRows links.
+    const href = `/digitenant/propertieslandlords/list?${new URLSearchParams({ properties_landlords_mosyfilter: btoa(new URLSearchParams(fixedQuery).toString()) })}`;
+    MosyCard('', React.createElement(React.Fragment, null,
+      React.createElement(PropertieslandlordsList, {
+        customProfilePath: '../propertieslandlords/profile',
+        title: `Properties landlord — ${row.landlord_name || ''}`,
+        fixedQuery,
+        hiddenActions: ['new'],
+      }),
+      React.createElement(ViewAllLink, { href, label: 'View more', onNavigate: router ? (url) => router.push(url) : undefined }),
+    ), true, 'modal4', 'mosycard_wide');
+  },
+
+  view_rentinvoices_propertieslist_profile: async ({ rows, router }) => {
+    const row = rows?.[0];
+    if (!row?.property_id) return;
+    const { default: PropertieslistList } = await import('../../propertieslist/uiControl/PropertieslistList');
+    const fixedQuery = { propertyId: btoa(row.property_id) };
+    // "View more" link: the list page reads <entity>_mosyfilter through MosySecureFilterEngine
+    // (value = base64 of "key=<base64 value>&..."), the same format as multiGridRows links.
+    const href = `/digitenant/propertieslist/list?${new URLSearchParams({ properties_list_mosyfilter: btoa(new URLSearchParams(fixedQuery).toString()) })}`;
+    MosyCard('', React.createElement(React.Fragment, null,
+      React.createElement(PropertieslistList, {
+        customProfilePath: '../propertieslist/profile',
+        title: `Properties list — ${row.property_name || ''}`,
+        fixedQuery,
+        hiddenActions: ['new'],
+      }),
+      React.createElement(ViewAllLink, { href, label: 'View more', onNavigate: router ? (url) => router.push(url) : undefined }),
+    ), true, 'modal4', 'mosycard_wide');
+  },
+
+  view_rentinvoices_propertiesunits_profile: async ({ rows, router }) => {
+    const row = rows?.[0];
+    if (!row?.unit_id) return;
+    const { default: PropertiesunitsList } = await import('../../propertiesunits/uiControl/PropertiesunitsList');
+    const fixedQuery = { unitId: btoa(row.unit_id) };
+    // "View more" link: the list page reads <entity>_mosyfilter through MosySecureFilterEngine
+    // (value = base64 of "key=<base64 value>&..."), the same format as multiGridRows links.
+    const href = `/digitenant/propertiesunits/list?${new URLSearchParams({ properties_units_mosyfilter: btoa(new URLSearchParams(fixedQuery).toString()) })}`;
+    MosyCard('', React.createElement(React.Fragment, null,
+      React.createElement(PropertiesunitsList, {
+        customProfilePath: '../propertiesunits/profile',
+        title: `Properties unit — ${row.unit_name || ''}`,
+        fixedQuery,
+        hiddenActions: ['new'],
+      }),
+      React.createElement(ViewAllLink, { href, label: 'View more', onNavigate: router ? (url) => router.push(url) : undefined }),
+    ), true, 'modal4', 'mosycard_wide');
+  },
 
   view_rentinvoices_rentitems: async ({ rows, router }) => {
     const row = rows?.[0];

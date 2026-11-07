@@ -23,6 +23,9 @@ export const RentinvoicesSchema = {
     { key: 'invoice_id', type: 'text', system: true, editable: false },
     { key: 'lease_id', type: 'text', searchable: true },
     { key: 'tenant_id', type: 'text', searchable: true },
+    { key: 'unit_id', type: 'text', searchable: true },
+    { key: 'property_id', type: 'text', searchable: true },
+    { key: 'landlord_id', type: 'text', searchable: true },
     { key: 'invoice_date', type: 'datetime' },
     { key: 'due_date', type: 'datetime' },
     { key: 'billing_period', type: 'text', searchable: true },
@@ -41,6 +44,9 @@ export const RentinvoicesSchema = {
   batchMutations: {
     ...resolveJoin('lease_id', { as: 'lease_id_2' }),
     ...resolveJoin('tenant_id', { as: 'tenant_name' }),
+    ...resolveJoin('unit_id', { as: 'unit_name' }),
+    ...resolveJoin('property_id', { as: 'property_name' }),
+    ...resolveJoin('landlord_id', { as: 'landlord_name' }),
   },
 
   roles: { view: 'view_rentinvoices', manage: 'manage_rentinvoices' },

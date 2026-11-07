@@ -23,6 +23,7 @@ export const PropertieslandlordsSchema = {
     { key: 'phone_number', type: 'text', searchable: true },
     { key: 'email', type: 'text', searchable: true },
     { key: 'payout_account', type: 'text', searchable: true },
+    { key: 'commission_percent', type: 'money', sum: true },
     { key: 'landlord_status', type: 'groupedSelect', endpoint: '/api/digitenant/propertieslandlords/list', groupByField: 'landlord_status', searchable: true },
     { key: 'remark', type: 'textarea', colSpan: 12, searchable: true },
     { key: 'hive_site_id', type: 'text', searchable: true },

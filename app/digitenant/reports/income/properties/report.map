@@ -1,5 +1,6 @@
 report Properties "Income by Property"
   by dimension
+  date payment_date
   entity rental_income_properties
   role view_reports
   currency KES
@@ -12,8 +13,8 @@ report Properties "Income by Property"
   sort collected desc
 
   # payments reach the property through their invoice (rent_invoices.property_id)
-  payments = count rent_payments where payment_status=confirmed via rent_invoices on invoice_id=invoice_id by=payment_date "Payments"
-  collected = sum rent_payments.amount where payment_status=confirmed via rent_invoices on invoice_id=invoice_id by=payment_date "Rent Collected" money
+  payments = count rent_payments where payment_status=COMPLETED via rent_invoices on invoice_id=invoice_id by=payment_date "Payments"
+  collected = sum rent_payments.amount where payment_status=COMPLETED via rent_invoices on invoice_id=invoice_id by=payment_date "Rent Collected" money
   billed = sum rent_invoices.total_amount by=invoice_date "Billed" money
   rate = round(collected / billed * 100) "Collected %"
   share = share(collected) "Share of Income"

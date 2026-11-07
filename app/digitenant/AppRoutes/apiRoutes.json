@@ -209,9 +209,7 @@
     "import": "/api/digitenant/maintenancerequests/import"
   },
   "maintenancevendors": {
-    "base": "/api/digitenant/maintenancevendors/list",
-    "delete": "/api/digitenant/maintenancevendors/list/delete",
-    "import": "/api/digitenant/maintenancevendors/import"
+    "base": "/api/digitenant/reports/maintenance/vendors/list"
   },
   "propertieslandlords": {
     "base": "/api/digitenant/propertieslandlords/list",
@@ -285,5 +283,36 @@
   },
   "landlordsstatement": {
     "base": "/api/digitenant/reports/landlords/statement/list"
+  },
+  "incomelandlords": {
+    "base": "/api/digitenant/reports/income/landlords/list"
+  },
+  "rentmethods": {
+    "base": "/api/digitenant/reports/rent/methods/list"
+  },
+  "tenantsexpiries": {
+    "base": "/api/digitenant/reports/tenants/expiries/list"
+  },
+  "maintenancecategories": {
+    "base": "/api/digitenant/reports/maintenance/categories/list"
+  },
+  "landlordscash": {
+    "base": "/api/digitenant/reports/landlords/cash/list"
+  },
+  "rentstatus": {
+    "base": "/api/digitenant/reports/rent/status/list"
+  },
+  "messagesreminders": {
+    "base": "/api/digitenant/messagesreminders/list",
+    "delete": "/api/digitenant/messagesreminders/list/delete",
+    "import": "/api/digitenant/messagesreminders/import"
+  },
+  "messagestemplates": {
+    "base": "/api/digitenant/messagestemplates/list",
+    "delete": "/api/digitenant/messagestemplates/list/delete",
+    "import": "/api/digitenant/messagestemplates/import"
+  },
+  "landlordsproperties": {
+    "base": "/api/digitenant/reports/landlords/properties/list"
   }
 }

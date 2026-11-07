@@ -1,0 +1,22 @@
+report Vendors "Maintenance by Vendor"
+  by dimension
+  date request_date
+  entity rental_maintenance_vendors
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group vendor_id
+  rows "Vendor"
+  labels maintenance_vendors.vendor_id > vendor_name
+  sort jobs desc
+
+  jobs = count maintenance_requests "Jobs"
+  urgent = count maintenance_requests where priority=URGENT "Urgent"
+  cost = sum maintenance_requests.cost_amount "Cost" money
+  share = share(jobs) "Share of Jobs"
+
+  headline {label} has the most jobs: {jobs}, costing {cost}.
+  remark urgent > 0 | watch | Urgent jobs | {label} handled {urgent} urgent requests out of {jobs}.
+  remark true | neutral | Vendor | {label}: {jobs} jobs, {share}% of all work.
